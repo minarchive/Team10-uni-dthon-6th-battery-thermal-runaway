@@ -1,0 +1,260 @@
+nohup: ignoring input
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+dinov2_s batch 0 1s
+dinov2_s batch 20 3s
+dinov2_s batch 40 7s
+dinov2_s batch 60 10s
+dinov2_s batch 80 13s
+dinov2_s batch 100 16s
+dinov2_s batch 120 19s
+dinov2_s batch 140 22s
+dinov2_s batch 160 26s
+dinov2_s batch 180 28s
+dinov2_s batch 200 32s
+dinov2_s batch 220 35s
+dinov2_s batch 240 37s
+dinov2_s batch 260 41s
+dinov2_s batch 280 43s
+dinov2_s batch 300 47s
+dinov2_s batch 320 50s
+dinov2_s batch 340 53s
+dinov2_s batch 360 55s
+saved /home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/features/dinov2_s ['b01_cls', 'b01_mean', 'b02_cls', 'b02_mean', 'b03_cls', 'b03_mean', 'b04_cls', 'b04_mean', 'b05_cls', 'b05_mean', 'b06_cls', 'b06_mean', 'b07_cls', 'b07_mean', 'b08_cls', 'b08_mean', 'b09_cls', 'b09_mean', 'b10_cls', 'b10_mean', 'b11_cls', 'b11_mean', 'b12_cls', 'b12_mean']
+{'encoder': 'dinov2_s', 'layer': 'b01_cls', 'dim': 384, 'f1_mean': np.float64(0.541), 'f1_std': np.float64(0.0432), 'oof_f1': 0.5397, 'adj_acc': 0.8682, 'stage_mae': 0.5518, 'gap_train_minus_val': 0.1601, 'wds': '[0.0001, 0.1, 0.0001, 0.001, 0.0001]', 'per_class_f1': '[0.884, 0.485, 0.661, 0.472, 0.339, 0.397]'}
+{'encoder': 'dinov2_s', 'layer': 'b01_mean', 'dim': 384, 'f1_mean': np.float64(0.5291), 'f1_std': np.float64(0.0405), 'oof_f1': 0.5246, 'adj_acc': 0.8542, 'stage_mae': 0.6049, 'gap_train_minus_val': 0.2899, 'wds': '[0.0001, 0.01, 0.1, 0.0001, 0.0001]', 'per_class_f1': '[0.892, 0.536, 0.627, 0.48, 0.339, 0.274]'}
+{'encoder': 'dinov2_s', 'layer': 'b02_cls', 'dim': 384, 'f1_mean': np.float64(0.5873), 'f1_std': np.float64(0.0688), 'oof_f1': 0.5828, 'adj_acc': 0.899, 'stage_mae': 0.4509, 'gap_train_minus_val': 0.1749, 'wds': '[0.0001, 0.1, 0.1, 0.0001, 0.1]', 'per_class_f1': '[0.9, 0.563, 0.686, 0.49, 0.409, 0.449]'}
+{'encoder': 'dinov2_s', 'layer': 'b02_mean', 'dim': 384, 'f1_mean': np.float64(0.6095), 'f1_std': np.float64(0.0547), 'oof_f1': 0.5993, 'adj_acc': 0.9086, 'stage_mae': 0.4225, 'gap_train_minus_val': 0.2136, 'wds': '[0.01, 0.1, 0.1, 0.01, 0.0001]', 'per_class_f1': '[0.931, 0.593, 0.729, 0.503, 0.394, 0.446]'}
+{'encoder': 'dinov2_s', 'layer': 'b03_cls', 'dim': 384, 'f1_mean': np.float64(0.6016), 'f1_std': np.float64(0.0522), 'oof_f1': 0.5987, 'adj_acc': 0.9193, 'stage_mae': 0.4004, 'gap_train_minus_val': 0.189, 'wds': '[0.1, 0.0001, 0.01, 0.0001, 0.0001]', 'per_class_f1': '[0.927, 0.575, 0.713, 0.51, 0.428, 0.438]'}
+{'encoder': 'dinov2_s', 'layer': 'b03_mean', 'dim': 384, 'f1_mean': np.float64(0.6627), 'f1_std': np.float64(0.0493), 'oof_f1': 0.6611, 'adj_acc': 0.9315, 'stage_mae': 0.3412, 'gap_train_minus_val': 0.1719, 'wds': '[0.1, 0.01, 0.0001, 0.0001, 0.01]', 'per_class_f1': '[0.935, 0.658, 0.75, 0.579, 0.47, 0.574]'}
+{'encoder': 'dinov2_s', 'layer': 'b04_cls', 'dim': 384, 'f1_mean': np.float64(0.6516), 'f1_std': np.float64(0.0587), 'oof_f1': 0.6455, 'adj_acc': 0.9339, 'stage_mae': 0.3451, 'gap_train_minus_val': 0.1942, 'wds': '[0.0001, 0.1, 0.1, 0.0001, 0.1]', 'per_class_f1': '[0.931, 0.642, 0.755, 0.506, 0.475, 0.564]'}
+{'encoder': 'dinov2_s', 'layer': 'b04_mean', 'dim': 384, 'f1_mean': np.float64(0.6979), 'f1_std': np.float64(0.0471), 'oof_f1': 0.6968, 'adj_acc': 0.9514, 'stage_mae': 0.2665, 'gap_train_minus_val': 0.1496, 'wds': '[0.0001, 0.1, 0.0001, 0.1, 0.0001]', 'per_class_f1': '[0.941, 0.674, 0.784, 0.572, 0.541, 0.668]'}
+{'encoder': 'dinov2_s', 'layer': 'b05_cls', 'dim': 384, 'f1_mean': np.float64(0.6702), 'f1_std': np.float64(0.0566), 'oof_f1': 0.6673, 'adj_acc': 0.9386, 'stage_mae': 0.3192, 'gap_train_minus_val': 0.2082, 'wds': '[0.0001, 0.1, 0.0001, 0.0001, 0.0001]', 'per_class_f1': '[0.942, 0.684, 0.744, 0.526, 0.524, 0.585]'}
+{'encoder': 'dinov2_s', 'layer': 'b05_mean', 'dim': 384, 'f1_mean': np.float64(0.7205), 'f1_std': np.float64(0.0475), 'oof_f1': 0.7186, 'adj_acc': 0.9624, 'stage_mae': 0.2364, 'gap_train_minus_val': 0.1845, 'wds': '[0.1, 0.0001, 0.0001, 0.0001, 0.1]', 'per_class_f1': '[0.955, 0.688, 0.777, 0.591, 0.612, 0.688]'}
+{'encoder': 'dinov2_s', 'layer': 'b06_cls', 'dim': 384, 'f1_mean': np.float64(0.6443), 'f1_std': np.float64(0.0656), 'oof_f1': 0.637, 'adj_acc': 0.9201, 'stage_mae': 0.4015, 'gap_train_minus_val': 0.1767, 'wds': '[0.0001, 0.0001, 0.0001, 0.0001, 0.0001]', 'per_class_f1': '[0.918, 0.6, 0.729, 0.591, 0.499, 0.485]'}
+{'encoder': 'dinov2_s', 'layer': 'b06_mean', 'dim': 384, 'f1_mean': np.float64(0.7285), 'f1_std': np.float64(0.0418), 'oof_f1': 0.726, 'adj_acc': 0.9697, 'stage_mae': 0.2209, 'gap_train_minus_val': 0.1486, 'wds': '[0.1, 0.0001, 0.0001, 0.0001, 0.01]', 'per_class_f1': '[0.951, 0.699, 0.792, 0.591, 0.615, 0.708]'}
+{'encoder': 'dinov2_s', 'layer': 'b07_cls', 'dim': 384, 'f1_mean': np.float64(0.6922), 'f1_std': np.float64(0.0332), 'oof_f1': 0.691, 'adj_acc': 0.9419, 'stage_mae': 0.2899, 'gap_train_minus_val': 0.1772, 'wds': '[0.1, 0.01, 0.0001, 0.01, 0.1]', 'per_class_f1': '[0.946, 0.674, 0.775, 0.588, 0.51, 0.653]'}
+{'encoder': 'dinov2_s', 'layer': 'b07_mean', 'dim': 384, 'f1_mean': np.float64(0.7197), 'f1_std': np.float64(0.0424), 'oof_f1': 0.7166, 'adj_acc': 0.9636, 'stage_mae': 0.2336, 'gap_train_minus_val': 0.1545, 'wds': '[0.0001, 0.001, 0.1, 0.1, 0.1]', 'per_class_f1': '[0.952, 0.717, 0.79, 0.557, 0.592, 0.691]'}
+{'encoder': 'dinov2_s', 'layer': 'b08_cls', 'dim': 384, 'f1_mean': np.float64(0.7184), 'f1_std': np.float64(0.0243), 'oof_f1': 0.7187, 'adj_acc': 0.96, 'stage_mae': 0.2378, 'gap_train_minus_val': 0.155, 'wds': '[0.01, 0.0001, 0.01, 0.01, 0.0001]', 'per_class_f1': '[0.958, 0.68, 0.778, 0.587, 0.599, 0.71]'}
+{'encoder': 'dinov2_s', 'layer': 'b08_mean', 'dim': 384, 'f1_mean': np.float64(0.7213), 'f1_std': np.float64(0.0359), 'oof_f1': 0.7185, 'adj_acc': 0.9604, 'stage_mae': 0.2407, 'gap_train_minus_val': 0.178, 'wds': '[0.1, 0.1, 0.1, 0.01, 0.0001]', 'per_class_f1': '[0.956, 0.706, 0.781, 0.552, 0.59, 0.726]'}
+{'encoder': 'dinov2_s', 'layer': 'b09_cls', 'dim': 384, 'f1_mean': np.float64(0.7006), 'f1_std': np.float64(0.0292), 'oof_f1': 0.6996, 'adj_acc': 0.9556, 'stage_mae': 0.2531, 'gap_train_minus_val': 0.1917, 'wds': '[0.0001, 0.1, 0.001, 0.01, 0.0001]', 'per_class_f1': '[0.959, 0.709, 0.771, 0.57, 0.548, 0.64]'}
+{'encoder': 'dinov2_s', 'layer': 'b09_mean', 'dim': 384, 'f1_mean': np.float64(0.7082), 'f1_std': np.float64(0.0332), 'oof_f1': 0.7067, 'adj_acc': 0.9602, 'stage_mae': 0.2424, 'gap_train_minus_val': 0.1889, 'wds': '[0.0001, 0.0001, 0.01, 0.0001, 0.1]', 'per_class_f1': '[0.958, 0.698, 0.777, 0.541, 0.579, 0.689]'}
+{'encoder': 'dinov2_s', 'layer': 'b10_cls', 'dim': 384, 'f1_mean': np.float64(0.6979), 'f1_std': np.float64(0.0256), 'oof_f1': 0.6961, 'adj_acc': 0.9568, 'stage_mae': 0.252, 'gap_train_minus_val': 0.182, 'wds': '[0.1, 0.0001, 0.1, 0.0001, 0.0001]', 'per_class_f1': '[0.948, 0.688, 0.766, 0.534, 0.58, 0.66]'}
+{'encoder': 'dinov2_s', 'layer': 'b10_mean', 'dim': 384, 'f1_mean': np.float64(0.7141), 'f1_std': np.float64(0.0299), 'oof_f1': 0.7121, 'adj_acc': 0.9601, 'stage_mae': 0.2356, 'gap_train_minus_val': 0.1832, 'wds': '[0.1, 0.0001, 0.1, 0.001, 0.1]', 'per_class_f1': '[0.956, 0.722, 0.795, 0.572, 0.588, 0.64]'}
+{'encoder': 'dinov2_s', 'layer': 'b11_cls', 'dim': 384, 'f1_mean': np.float64(0.6863), 'f1_std': np.float64(0.0302), 'oof_f1': 0.6862, 'adj_acc': 0.9554, 'stage_mae': 0.2644, 'gap_train_minus_val': 0.1898, 'wds': '[0.0001, 0.1, 0.1, 0.1, 0.001]', 'per_class_f1': '[0.95, 0.673, 0.769, 0.539, 0.552, 0.634]'}
+{'encoder': 'dinov2_s', 'layer': 'b11_mean', 'dim': 384, 'f1_mean': np.float64(0.7198), 'f1_std': np.float64(0.0331), 'oof_f1': 0.7186, 'adj_acc': 0.96, 'stage_mae': 0.2302, 'gap_train_minus_val': 0.165, 'wds': '[0.1, 0.1, 0.1, 0.0001, 0.1]', 'per_class_f1': '[0.952, 0.707, 0.791, 0.606, 0.574, 0.682]'}
+{'encoder': 'dinov2_s', 'layer': 'b12_cls', 'dim': 384, 'f1_mean': np.float64(0.6816), 'f1_std': np.float64(0.0309), 'oof_f1': 0.6787, 'adj_acc': 0.9508, 'stage_mae': 0.2782, 'gap_train_minus_val': 0.1929, 'wds': '[0.0001, 0.1, 0.1, 0.1, 0.0001]', 'per_class_f1': '[0.945, 0.653, 0.73, 0.537, 0.554, 0.653]'}
+{'encoder': 'dinov2_s', 'layer': 'b12_mean', 'dim': 384, 'f1_mean': np.float64(0.6773), 'f1_std': np.float64(0.0398), 'oof_f1': 0.6749, 'adj_acc': 0.9476, 'stage_mae': 0.2834, 'gap_train_minus_val': 0.2023, 'wds': '[0.1, 0.0001, 0.01, 0.1, 0.0001]', 'per_class_f1': '[0.947, 0.676, 0.736, 0.561, 0.54, 0.588]'}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+resnet50 batch 0 1s
+resnet50 batch 20 2s
+resnet50 batch 40 4s
+resnet50 batch 60 5s
+resnet50 batch 80 7s
+resnet50 batch 100 8s
+resnet50 batch 120 10s
+resnet50 batch 140 11s
+resnet50 batch 160 13s
+resnet50 batch 180 15s
+resnet50 batch 200 16s
+resnet50 batch 220 18s
+resnet50 batch 240 19s
+resnet50 batch 260 21s
+resnet50 batch 280 22s
+resnet50 batch 300 24s
+resnet50 batch 320 26s
+resnet50 batch 340 27s
+resnet50 batch 360 28s
+saved /home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/features/resnet50 ['s1_gap', 's1_max', 's2_gap', 's2_max', 's3_gap', 's3_max', 's4_gap', 's4_max']
+{'encoder': 'resnet50', 'layer': 's1_gap', 'dim': 256, 'f1_mean': np.float64(0.6981), 'f1_std': np.float64(0.0358), 'oof_f1': 0.6975, 'adj_acc': 0.96, 'stage_mae': 0.2498, 'gap_train_minus_val': 0.1357, 'wds': '[0.1, 0.001, 0.0001, 0.0001, 0.01]', 'per_class_f1': '[0.953, 0.687, 0.761, 0.541, 0.584, 0.659]'}
+{'encoder': 'resnet50', 'layer': 's1_max', 'dim': 256, 'f1_mean': np.float64(0.5959), 'f1_std': np.float64(0.0283), 'oof_f1': 0.5951, 'adj_acc': 0.8971, 'stage_mae': 0.4238, 'gap_train_minus_val': 0.2304, 'wds': '[0.1, 0.1, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.929, 0.556, 0.679, 0.51, 0.409, 0.488]'}
+{'encoder': 'resnet50', 'layer': 's2_gap', 'dim': 512, 'f1_mean': np.float64(0.7217), 'f1_std': np.float64(0.0511), 'oof_f1': 0.7152, 'adj_acc': 0.9491, 'stage_mae': 0.256, 'gap_train_minus_val': 0.1696, 'wds': '[0.1, 0.01, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.947, 0.748, 0.797, 0.535, 0.595, 0.67]'}
+{'encoder': 'resnet50', 'layer': 's2_max', 'dim': 512, 'f1_mean': np.float64(0.6513), 'f1_std': np.float64(0.0326), 'oof_f1': 0.6507, 'adj_acc': 0.9381, 'stage_mae': 0.3114, 'gap_train_minus_val': 0.2493, 'wds': '[0.0001, 0.1, 0.1, 0.01, 0.1]', 'per_class_f1': '[0.951, 0.669, 0.751, 0.514, 0.501, 0.518]'}
+{'encoder': 'resnet50', 'layer': 's3_gap', 'dim': 1024, 'f1_mean': np.float64(0.7329), 'f1_std': np.float64(0.0374), 'oof_f1': 0.731, 'adj_acc': 0.9706, 'stage_mae': 0.2086, 'gap_train_minus_val': 0.1997, 'wds': '[0.1, 0.0001, 0.1, 0.0001, 0.0001]', 'per_class_f1': '[0.967, 0.705, 0.787, 0.61, 0.627, 0.69]'}
+{'encoder': 'resnet50', 'layer': 's3_max', 'dim': 1024, 'f1_mean': np.float64(0.7136), 'f1_std': np.float64(0.0395), 'oof_f1': 0.7127, 'adj_acc': 0.9595, 'stage_mae': 0.2406, 'gap_train_minus_val': 0.2171, 'wds': '[0.0001, 0.0001, 0.01, 0.1, 0.1]', 'per_class_f1': '[0.958, 0.704, 0.775, 0.568, 0.603, 0.668]'}
+{'encoder': 'resnet50', 'layer': 's4_gap', 'dim': 2048, 'f1_mean': np.float64(0.6906), 'f1_std': np.float64(0.0373), 'oof_f1': 0.6893, 'adj_acc': 0.9497, 'stage_mae': 0.2788, 'gap_train_minus_val': 0.2609, 'wds': '[0.0001, 0.1, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.949, 0.687, 0.778, 0.567, 0.571, 0.584]'}
+{'encoder': 'resnet50', 'layer': 's4_max', 'dim': 2048, 'f1_mean': np.float64(0.681), 'f1_std': np.float64(0.0358), 'oof_f1': 0.6825, 'adj_acc': 0.9541, 'stage_mae': 0.2808, 'gap_train_minus_val': 0.25, 'wds': '[0.1, 0.1, 0.0001, 0.1, 0.0001]', 'per_class_f1': '[0.943, 0.67, 0.766, 0.532, 0.577, 0.606]'}
+convnext_s batch 0 3s
+convnext_s batch 20 5s
+convnext_s batch 40 7s
+convnext_s batch 60 8s
+convnext_s batch 80 10s
+convnext_s batch 100 12s
+convnext_s batch 120 14s
+convnext_s batch 140 16s
+convnext_s batch 160 18s
+convnext_s batch 180 20s
+convnext_s batch 200 22s
+convnext_s batch 220 23s
+convnext_s batch 240 25s
+convnext_s batch 260 27s
+convnext_s batch 280 28s
+convnext_s batch 300 30s
+convnext_s batch 320 32s
+convnext_s batch 340 34s
+convnext_s batch 360 35s
+saved /home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/features/convnext_s ['s1_gap', 's1_max', 's2_gap', 's2_max', 's3_gap', 's3_max', 's4_gap', 's4_max']
+{'encoder': 'convnext_s', 'layer': 's1_gap', 'dim': 96, 'f1_mean': np.float64(0.6115), 'f1_std': np.float64(0.0269), 'oof_f1': 0.6113, 'adj_acc': 0.9166, 'stage_mae': 0.3824, 'gap_train_minus_val': 0.101, 'wds': '[0.1, 0.1, 0.0001, 0.01, 0.1]', 'per_class_f1': '[0.913, 0.597, 0.7, 0.511, 0.437, 0.51]'}
+{'encoder': 'convnext_s', 'layer': 's1_max', 'dim': 96, 'f1_mean': np.float64(0.546), 'f1_std': np.float64(0.0242), 'oof_f1': 0.5474, 'adj_acc': 0.8952, 'stage_mae': 0.4965, 'gap_train_minus_val': 0.1518, 'wds': '[0.1, 0.1, 0.01, 0.0001, 0.0001]', 'per_class_f1': '[0.878, 0.466, 0.643, 0.489, 0.394, 0.414]'}
+{'encoder': 'convnext_s', 'layer': 's2_gap', 'dim': 192, 'f1_mean': np.float64(0.6868), 'f1_std': np.float64(0.0444), 'oof_f1': 0.6892, 'adj_acc': 0.9598, 'stage_mae': 0.253, 'gap_train_minus_val': 0.1412, 'wds': '[0.01, 0.1, 0.0001, 0.0001, 0.0001]', 'per_class_f1': '[0.955, 0.694, 0.757, 0.543, 0.573, 0.614]'}
+{'encoder': 'convnext_s', 'layer': 's2_max', 'dim': 192, 'f1_mean': np.float64(0.601), 'f1_std': np.float64(0.0405), 'oof_f1': 0.5989, 'adj_acc': 0.9155, 'stage_mae': 0.3858, 'gap_train_minus_val': 0.2214, 'wds': '[0.01, 0.1, 0.01, 0.1, 0.0001]', 'per_class_f1': '[0.919, 0.584, 0.715, 0.477, 0.427, 0.471]'}
+{'encoder': 'convnext_s', 'layer': 's3_gap', 'dim': 384, 'f1_mean': np.float64(0.7217), 'f1_std': np.float64(0.0305), 'oof_f1': 0.7234, 'adj_acc': 0.965, 'stage_mae': 0.2252, 'gap_train_minus_val': 0.1809, 'wds': '[0.0001, 0.0001, 0.01, 0.01, 0.0001]', 'per_class_f1': '[0.959, 0.716, 0.776, 0.577, 0.583, 0.73]'}
+{'encoder': 'convnext_s', 'layer': 's3_max', 'dim': 384, 'f1_mean': np.float64(0.5416), 'f1_std': np.float64(0.0436), 'oof_f1': 0.5394, 'adj_acc': 0.8703, 'stage_mae': 0.5628, 'gap_train_minus_val': 0.2489, 'wds': '[0.0001, 0.1, 0.1, 0.1, 0.1]', 'per_class_f1': '[0.875, 0.518, 0.598, 0.444, 0.395, 0.406]'}
+{'encoder': 'convnext_s', 'layer': 's4_gap', 'dim': 768, 'f1_mean': np.float64(0.6888), 'f1_std': np.float64(0.0343), 'oof_f1': 0.6912, 'adj_acc': 0.9534, 'stage_mae': 0.2808, 'gap_train_minus_val': 0.2282, 'wds': '[0.1, 0.1, 0.1, 0.1, 0.0001]', 'per_class_f1': '[0.95, 0.653, 0.737, 0.559, 0.558, 0.691]'}
+{'encoder': 'convnext_s', 'layer': 's4_max', 'dim': 768, 'f1_mean': np.float64(0.655), 'f1_std': np.float64(0.045), 'oof_f1': 0.6533, 'adj_acc': 0.9337, 'stage_mae': 0.3439, 'gap_train_minus_val': 0.2591, 'wds': '[0.0001, 0.1, 0.1, 0.1, 0.01]', 'per_class_f1': '[0.908, 0.599, 0.716, 0.566, 0.533, 0.598]'}
+dinov2_b batch 0 1s
+dinov2_b batch 20 4s
+dinov2_b batch 40 8s
+dinov2_b batch 60 13s
+dinov2_b batch 80 17s
+dinov2_b batch 100 20s
+dinov2_b batch 120 24s
+dinov2_b batch 140 28s
+dinov2_b batch 160 33s
+dinov2_b batch 180 36s
+dinov2_b batch 200 40s
+dinov2_b batch 220 44s
+dinov2_b batch 240 47s
+dinov2_b batch 260 52s
+dinov2_b batch 280 55s
+dinov2_b batch 300 60s
+dinov2_b batch 320 64s
+dinov2_b batch 340 68s
+dinov2_b batch 360 71s
+saved /home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/features/dinov2_b ['b01_cls', 'b01_mean', 'b02_cls', 'b02_mean', 'b03_cls', 'b03_mean', 'b04_cls', 'b04_mean', 'b05_cls', 'b05_mean', 'b06_cls', 'b06_mean', 'b07_cls', 'b07_mean', 'b08_cls', 'b08_mean', 'b09_cls', 'b09_mean', 'b10_cls', 'b10_mean', 'b11_cls', 'b11_mean', 'b12_cls', 'b12_mean']
+{'encoder': 'dinov2_b', 'layer': 'b01_cls', 'dim': 768, 'f1_mean': np.float64(0.5767), 'f1_std': np.float64(0.0352), 'oof_f1': 0.5735, 'adj_acc': 0.8949, 'stage_mae': 0.4568, 'gap_train_minus_val': 0.1705, 'wds': '[0.01, 0.1, 0.1, 0.01, 0.01]', 'per_class_f1': '[0.903, 0.549, 0.668, 0.449, 0.385, 0.487]'}
+{'encoder': 'dinov2_b', 'layer': 'b01_mean', 'dim': 768, 'f1_mean': np.float64(0.5804), 'f1_std': np.float64(0.0581), 'oof_f1': 0.5672, 'adj_acc': 0.9078, 'stage_mae': 0.446, 'gap_train_minus_val': 0.2369, 'wds': '[0.01, 0.1, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.924, 0.613, 0.665, 0.442, 0.38, 0.378]'}
+{'encoder': 'dinov2_b', 'layer': 'b02_cls', 'dim': 768, 'f1_mean': np.float64(0.5806), 'f1_std': np.float64(0.0769), 'oof_f1': 0.571, 'adj_acc': 0.9276, 'stage_mae': 0.4108, 'gap_train_minus_val': 0.199, 'wds': '[0.01, 0.0001, 0.0001, 0.1, 0.0001]', 'per_class_f1': '[0.934, 0.55, 0.665, 0.426, 0.38, 0.471]'}
+{'encoder': 'dinov2_b', 'layer': 'b02_mean', 'dim': 768, 'f1_mean': np.float64(0.6451), 'f1_std': np.float64(0.059), 'oof_f1': 0.6331, 'adj_acc': 0.9364, 'stage_mae': 0.3571, 'gap_train_minus_val': 0.2277, 'wds': '[0.0001, 0.0001, 0.1, 0.1, 0.0001]', 'per_class_f1': '[0.935, 0.654, 0.726, 0.48, 0.471, 0.533]'}
+{'encoder': 'dinov2_b', 'layer': 'b03_cls', 'dim': 768, 'f1_mean': np.float64(0.6188), 'f1_std': np.float64(0.0703), 'oof_f1': 0.6075, 'adj_acc': 0.9355, 'stage_mae': 0.3642, 'gap_train_minus_val': 0.1869, 'wds': '[0.0001, 0.01, 0.1, 0.1, 0.1]', 'per_class_f1': '[0.945, 0.614, 0.702, 0.461, 0.423, 0.501]'}
+{'encoder': 'dinov2_b', 'layer': 'b03_mean', 'dim': 768, 'f1_mean': np.float64(0.6887), 'f1_std': np.float64(0.0632), 'oof_f1': 0.6837, 'adj_acc': 0.9498, 'stage_mae': 0.2875, 'gap_train_minus_val': 0.1827, 'wds': '[0.01, 0.1, 0.1, 0.0001, 0.01]', 'per_class_f1': '[0.937, 0.68, 0.775, 0.504, 0.551, 0.655]'}
+{'encoder': 'dinov2_b', 'layer': 'b04_cls', 'dim': 768, 'f1_mean': np.float64(0.6733), 'f1_std': np.float64(0.0553), 'oof_f1': 0.6667, 'adj_acc': 0.9336, 'stage_mae': 0.3251, 'gap_train_minus_val': 0.2109, 'wds': '[0.0001, 0.0001, 0.1, 0.1, 0.1]', 'per_class_f1': '[0.943, 0.662, 0.767, 0.554, 0.466, 0.608]'}
+{'encoder': 'dinov2_b', 'layer': 'b04_mean', 'dim': 768, 'f1_mean': np.float64(0.7111), 'f1_std': np.float64(0.0578), 'oof_f1': 0.7071, 'adj_acc': 0.9503, 'stage_mae': 0.2674, 'gap_train_minus_val': 0.1886, 'wds': '[0.0001, 0.0001, 0.1, 0.01, 0.1]', 'per_class_f1': '[0.945, 0.707, 0.784, 0.543, 0.584, 0.68]'}
+{'encoder': 'dinov2_b', 'layer': 'b05_cls', 'dim': 768, 'f1_mean': np.float64(0.7115), 'f1_std': np.float64(0.0433), 'oof_f1': 0.7063, 'adj_acc': 0.9476, 'stage_mae': 0.2795, 'gap_train_minus_val': 0.1772, 'wds': '[0.01, 0.1, 0.1, 0.01, 0.0001]', 'per_class_f1': '[0.945, 0.705, 0.789, 0.584, 0.511, 0.704]'}
+{'encoder': 'dinov2_b', 'layer': 'b05_mean', 'dim': 768, 'f1_mean': np.float64(0.7351), 'f1_std': np.float64(0.054), 'oof_f1': 0.7354, 'adj_acc': 0.964, 'stage_mae': 0.2208, 'gap_train_minus_val': 0.192, 'wds': '[0.1, 0.1, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.956, 0.717, 0.795, 0.609, 0.607, 0.729]'}
+{'encoder': 'dinov2_b', 'layer': 'b06_cls', 'dim': 768, 'f1_mean': np.float64(0.7101), 'f1_std': np.float64(0.0642), 'oof_f1': 0.7054, 'adj_acc': 0.9536, 'stage_mae': 0.2649, 'gap_train_minus_val': 0.1851, 'wds': '[0.0001, 0.01, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.952, 0.681, 0.763, 0.555, 0.586, 0.696]'}
+{'encoder': 'dinov2_b', 'layer': 'b06_mean', 'dim': 768, 'f1_mean': np.float64(0.727), 'f1_std': np.float64(0.0447), 'oof_f1': 0.7256, 'adj_acc': 0.9656, 'stage_mae': 0.2287, 'gap_train_minus_val': 0.1915, 'wds': '[0.1, 0.1, 0.1, 0.1, 0.1]', 'per_class_f1': '[0.958, 0.706, 0.768, 0.557, 0.621, 0.744]'}
+{'encoder': 'dinov2_b', 'layer': 'b07_cls', 'dim': 768, 'f1_mean': np.float64(0.6949), 'f1_std': np.float64(0.0335), 'oof_f1': 0.6895, 'adj_acc': 0.9558, 'stage_mae': 0.2817, 'gap_train_minus_val': 0.2047, 'wds': '[0.1, 0.1, 0.1, 0.01, 0.1]', 'per_class_f1': '[0.953, 0.676, 0.759, 0.547, 0.602, 0.6]'}
+{'encoder': 'dinov2_b', 'layer': 'b07_mean', 'dim': 768, 'f1_mean': np.float64(0.7228), 'f1_std': np.float64(0.0417), 'oof_f1': 0.719, 'adj_acc': 0.9602, 'stage_mae': 0.238, 'gap_train_minus_val': 0.1794, 'wds': '[0.0001, 0.0001, 0.0001, 0.0001, 0.1]', 'per_class_f1': '[0.959, 0.689, 0.758, 0.573, 0.608, 0.726]'}
+{'encoder': 'dinov2_b', 'layer': 'b08_cls', 'dim': 768, 'f1_mean': np.float64(0.7015), 'f1_std': np.float64(0.0406), 'oof_f1': 0.6994, 'adj_acc': 0.9599, 'stage_mae': 0.2575, 'gap_train_minus_val': 0.2056, 'wds': '[0.001, 0.0001, 0.1, 0.0001, 0.001]', 'per_class_f1': '[0.954, 0.655, 0.766, 0.586, 0.569, 0.667]'}
+{'encoder': 'dinov2_b', 'layer': 'b08_mean', 'dim': 768, 'f1_mean': np.float64(0.7291), 'f1_std': np.float64(0.0353), 'oof_f1': 0.7285, 'adj_acc': 0.965, 'stage_mae': 0.215, 'gap_train_minus_val': 0.1919, 'wds': '[0.01, 0.0001, 0.1, 0.1, 0.01]', 'per_class_f1': '[0.963, 0.723, 0.79, 0.596, 0.622, 0.677]'}
+{'encoder': 'dinov2_b', 'layer': 'b09_cls', 'dim': 768, 'f1_mean': np.float64(0.6864), 'f1_std': np.float64(0.0419), 'oof_f1': 0.6834, 'adj_acc': 0.9602, 'stage_mae': 0.2548, 'gap_train_minus_val': 0.2245, 'wds': '[0.0001, 0.1, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.961, 0.663, 0.755, 0.568, 0.536, 0.617]'}
+{'encoder': 'dinov2_b', 'layer': 'b09_mean', 'dim': 768, 'f1_mean': np.float64(0.7153), 'f1_std': np.float64(0.0226), 'oof_f1': 0.715, 'adj_acc': 0.9606, 'stage_mae': 0.2309, 'gap_train_minus_val': 0.2022, 'wds': '[0.1, 0.1, 0.0001, 0.01, 0.01]', 'per_class_f1': '[0.963, 0.72, 0.783, 0.56, 0.621, 0.642]'}
+{'encoder': 'dinov2_b', 'layer': 'b10_cls', 'dim': 768, 'f1_mean': np.float64(0.6991), 'f1_std': np.float64(0.0378), 'oof_f1': 0.6945, 'adj_acc': 0.9546, 'stage_mae': 0.2583, 'gap_train_minus_val': 0.2113, 'wds': '[0.0001, 0.1, 0.1, 0.1, 0.01]', 'per_class_f1': '[0.961, 0.711, 0.756, 0.561, 0.568, 0.608]'}
+{'encoder': 'dinov2_b', 'layer': 'b10_mean', 'dim': 768, 'f1_mean': np.float64(0.7132), 'f1_std': np.float64(0.0333), 'oof_f1': 0.7124, 'adj_acc': 0.9594, 'stage_mae': 0.2356, 'gap_train_minus_val': 0.1948, 'wds': '[0.0001, 0.1, 0.1, 0.1, 0.1]', 'per_class_f1': '[0.958, 0.716, 0.793, 0.584, 0.585, 0.638]'}
+{'encoder': 'dinov2_b', 'layer': 'b11_cls', 'dim': 768, 'f1_mean': np.float64(0.6772), 'f1_std': np.float64(0.0266), 'oof_f1': 0.6775, 'adj_acc': 0.9496, 'stage_mae': 0.2809, 'gap_train_minus_val': 0.1928, 'wds': '[0.0001, 0.0001, 0.1, 0.1, 0.0001]', 'per_class_f1': '[0.952, 0.693, 0.753, 0.545, 0.548, 0.575]'}
+{'encoder': 'dinov2_b', 'layer': 'b11_mean', 'dim': 768, 'f1_mean': np.float64(0.7122), 'f1_std': np.float64(0.0311), 'oof_f1': 0.7133, 'adj_acc': 0.9576, 'stage_mae': 0.2492, 'gap_train_minus_val': 0.2114, 'wds': '[0.01, 0.1, 0.1, 0.1, 0.001]', 'per_class_f1': '[0.954, 0.69, 0.768, 0.565, 0.599, 0.703]'}
+{'encoder': 'dinov2_b', 'layer': 'b12_cls', 'dim': 768, 'f1_mean': np.float64(0.6852), 'f1_std': np.float64(0.0358), 'oof_f1': 0.6853, 'adj_acc': 0.9445, 'stage_mae': 0.2786, 'gap_train_minus_val': 0.2236, 'wds': '[0.1, 0.01, 0.1, 0.1, 0.0001]', 'per_class_f1': '[0.953, 0.688, 0.757, 0.534, 0.532, 0.647]'}
+{'encoder': 'dinov2_b', 'layer': 'b12_mean', 'dim': 768, 'f1_mean': np.float64(0.685), 'f1_std': np.float64(0.0386), 'oof_f1': 0.6857, 'adj_acc': 0.946, 'stage_mae': 0.2919, 'gap_train_minus_val': 0.1981, 'wds': '[0.1, 0.0001, 0.1, 0.01, 0.1]', 'per_class_f1': '[0.946, 0.662, 0.748, 0.529, 0.577, 0.652]'}
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+Downloading: "https://github.com/facebookresearch/dino/zipball/main" to /home/ubuntu/.cache/torch/hub/main.zip
+Downloading: "https://dl.fbaipublicfiles.com/dino/dino_resnet50_pretrain/dino_resnet50_pretrain.pth" to /home/ubuntu/.cache/torch/hub/checkpoints/dino_resnet50_pretrain.pth
+  0%|          | 0.00/90.0M [00:00<?, ?B/s]  0%|          | 128k/90.0M [00:00<02:44, 574kB/s]  0%|          | 256k/90.0M [00:00<01:54, 819kB/s]  0%|          | 384k/90.0M [00:00<01:38, 951kB/s]  1%|          | 768k/90.0M [00:00<00:51, 1.83MB/s]  2%|▏         | 1.62M/90.0M [00:00<00:23, 3.91MB/s]  3%|▎         | 3.12M/90.0M [00:00<00:12, 7.15MB/s]  7%|▋         | 6.25M/90.0M [00:00<00:06, 14.0MB/s] 11%|█▏        | 10.1M/90.0M [00:01<00:04, 20.5MB/s] 15%|█▌        | 13.8M/90.0M [00:01<00:03, 25.2MB/s] 18%|█▊        | 16.2M/90.0M [00:01<00:03, 23.2MB/s] 21%|██        | 18.9M/90.0M [00:01<00:03, 23.4MB/s] 25%|██▌       | 22.6M/90.0M [00:01<00:02, 26.5MB/s] 29%|██▉       | 26.5M/90.0M [00:01<00:02, 28.7MB/s] 33%|███▎      | 30.0M/90.0M [00:01<00:02, 27.7MB/s] 38%|███▊      | 33.9M/90.0M [00:01<00:02, 28.9MB/s] 42%|████▏     | 37.6M/90.0M [00:02<00:01, 30.3MB/s] 46%|████▌     | 41.5M/90.0M [00:02<00:01, 31.6MB/s] 50%|█████     | 45.0M/90.0M [00:02<00:01, 27.1MB/s] 54%|█████▍    | 48.9M/90.0M [00:02<00:01, 28.5MB/s] 58%|█████▊    | 52.6M/90.0M [00:02<00:01, 28.9MB/s] 63%|██████▎   | 56.5M/90.0M [00:02<00:01, 30.4MB/s] 67%|██████▋   | 60.0M/90.0M [00:02<00:01, 31.4MB/s] 71%|███████   | 63.9M/90.0M [00:02<00:00, 31.7MB/s] 75%|███████▌  | 67.6M/90.0M [00:03<00:00, 30.4MB/s] 79%|███████▉  | 71.5M/90.0M [00:03<00:00, 31.7MB/s] 83%|████████▎ | 75.0M/90.0M [00:03<00:00, 31.9MB/s] 88%|████████▊ | 78.9M/90.0M [00:03<00:00, 31.4MB/s] 92%|█████████▏| 82.6M/90.0M [00:03<00:00, 31.9MB/s] 96%|█████████▌| 86.5M/90.0M [00:03<00:00, 32.7MB/s]100%|██████████| 90.0M/90.0M [00:03<00:00, 25.6MB/s]
+dino_r50 batch 0 1s
+dino_r50 batch 20 2s
+dino_r50 batch 40 4s
+dino_r50 batch 60 5s
+dino_r50 batch 80 7s
+dino_r50 batch 100 8s
+dino_r50 batch 120 10s
+dino_r50 batch 140 12s
+dino_r50 batch 160 13s
+dino_r50 batch 180 15s
+dino_r50 batch 200 16s
+dino_r50 batch 220 18s
+dino_r50 batch 240 19s
+dino_r50 batch 260 21s
+dino_r50 batch 280 22s
+dino_r50 batch 300 24s
+dino_r50 batch 320 26s
+dino_r50 batch 340 27s
+dino_r50 batch 360 28s
+saved /home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/features/dino_r50 ['s1_gap', 's1_max', 's2_gap', 's2_max', 's3_gap', 's3_max', 's4_gap', 's4_max']
+{'encoder': 'dino_r50', 'layer': 's1_gap', 'dim': 256, 'f1_mean': np.float64(0.6746), 'f1_std': np.float64(0.0488), 'oof_f1': 0.6747, 'adj_acc': 0.9369, 'stage_mae': 0.3257, 'gap_train_minus_val': 0.1025, 'wds': '[0.01, 0.0001, 0.1, 0.01, 0.1]', 'per_class_f1': '[0.917, 0.657, 0.754, 0.587, 0.496, 0.636]'}
+{'encoder': 'dino_r50', 'layer': 's1_max', 'dim': 256, 'f1_mean': np.float64(0.5558), 'f1_std': np.float64(0.0223), 'oof_f1': 0.552, 'adj_acc': 0.8708, 'stage_mae': 0.5533, 'gap_train_minus_val': 0.2361, 'wds': '[0.1, 0.1, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.88, 0.509, 0.624, 0.47, 0.45, 0.378]'}
+{'encoder': 'dino_r50', 'layer': 's2_gap', 'dim': 512, 'f1_mean': np.float64(0.7302), 'f1_std': np.float64(0.0415), 'oof_f1': 0.7293, 'adj_acc': 0.9618, 'stage_mae': 0.2249, 'gap_train_minus_val': 0.1455, 'wds': '[0.1, 0.01, 0.0001, 0.0001, 0.01]', 'per_class_f1': '[0.956, 0.717, 0.79, 0.602, 0.608, 0.703]'}
+{'encoder': 'dino_r50', 'layer': 's2_max', 'dim': 512, 'f1_mean': np.float64(0.6271), 'f1_std': np.float64(0.0355), 'oof_f1': 0.6248, 'adj_acc': 0.9139, 'stage_mae': 0.4039, 'gap_train_minus_val': 0.2696, 'wds': '[0.1, 0.01, 0.0001, 0.1, 0.0001]', 'per_class_f1': '[0.928, 0.606, 0.704, 0.545, 0.459, 0.507]'}
+{'encoder': 'dino_r50', 'layer': 's3_gap', 'dim': 1024, 'f1_mean': np.float64(0.7378), 'f1_std': np.float64(0.038), 'oof_f1': 0.7361, 'adj_acc': 0.9667, 'stage_mae': 0.219, 'gap_train_minus_val': 0.1943, 'wds': '[0.1, 0.01, 0.1, 0.1, 0.1]', 'per_class_f1': '[0.962, 0.745, 0.798, 0.576, 0.598, 0.736]'}
+{'encoder': 'dino_r50', 'layer': 's3_max', 'dim': 1024, 'f1_mean': np.float64(0.7233), 'f1_std': np.float64(0.0453), 'oof_f1': 0.7211, 'adj_acc': 0.9568, 'stage_mae': 0.2298, 'gap_train_minus_val': 0.2011, 'wds': '[0.0001, 0.1, 0.0001, 0.01, 0.1]', 'per_class_f1': '[0.963, 0.721, 0.79, 0.578, 0.584, 0.69]'}
+{'encoder': 'dino_r50', 'layer': 's4_gap', 'dim': 2048, 'f1_mean': np.float64(0.7495), 'f1_std': np.float64(0.0383), 'oof_f1': 0.7467, 'adj_acc': 0.9642, 'stage_mae': 0.2009, 'gap_train_minus_val': 0.2159, 'wds': '[0.0001, 0.001, 0.1, 0.0001, 0.1]', 'per_class_f1': '[0.966, 0.761, 0.823, 0.603, 0.63, 0.698]'}
+{'encoder': 'dino_r50', 'layer': 's4_max', 'dim': 2048, 'f1_mean': np.float64(0.7254), 'f1_std': np.float64(0.0277), 'oof_f1': 0.7258, 'adj_acc': 0.9641, 'stage_mae': 0.2135, 'gap_train_minus_val': 0.239, 'wds': '[0.0001, 0.1, 0.01, 0.1, 0.0001]', 'per_class_f1': '[0.966, 0.73, 0.801, 0.589, 0.61, 0.658]'}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+siglip_b batch 0 1s
+siglip_b batch 20 3s
+siglip_b batch 40 6s
+siglip_b batch 60 9s
+siglip_b batch 80 11s
+siglip_b batch 100 14s
+siglip_b batch 120 17s
+siglip_b batch 140 20s
+siglip_b batch 160 22s
+siglip_b batch 180 25s
+siglip_b batch 200 28s
+siglip_b batch 220 30s
+siglip_b batch 240 33s
+siglip_b batch 260 36s
+siglip_b batch 280 38s
+siglip_b batch 300 41s
+siglip_b batch 320 44s
+siglip_b batch 340 47s
+siglip_b batch 360 49s
+saved /home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/features/siglip_b ['b01_mean', 'b02_mean', 'b03_mean', 'b04_mean', 'b05_mean', 'b06_mean', 'b07_mean', 'b08_mean', 'b09_mean', 'b10_mean', 'b11_mean', 'b12_mean']
+{'encoder': 'siglip_b', 'layer': 'b01_mean', 'dim': 768, 'f1_mean': np.float64(0.62), 'f1_std': np.float64(0.0437), 'oof_f1': 0.6126, 'adj_acc': 0.9078, 'stage_mae': 0.4326, 'gap_train_minus_val': 0.1703, 'wds': '[0.01, 0.1, 0.1, 0.0001, 0.0001]', 'per_class_f1': '[0.927, 0.623, 0.738, 0.553, 0.493, 0.342]'}
+{'encoder': 'siglip_b', 'layer': 'b02_mean', 'dim': 768, 'f1_mean': np.float64(0.6689), 'f1_std': np.float64(0.0561), 'oof_f1': 0.6643, 'adj_acc': 0.9374, 'stage_mae': 0.3049, 'gap_train_minus_val': 0.184, 'wds': '[0.01, 0.0001, 0.1, 0.01, 0.1]', 'per_class_f1': '[0.936, 0.692, 0.779, 0.498, 0.523, 0.558]'}
+{'encoder': 'siglip_b', 'layer': 'b03_mean', 'dim': 768, 'f1_mean': np.float64(0.7155), 'f1_std': np.float64(0.0451), 'oof_f1': 0.7122, 'adj_acc': 0.9508, 'stage_mae': 0.2505, 'gap_train_minus_val': 0.1928, 'wds': '[0.01, 0.01, 0.1, 0.0001, 0.0001]', 'per_class_f1': '[0.952, 0.763, 0.815, 0.5, 0.583, 0.659]'}
+{'encoder': 'siglip_b', 'layer': 'b04_mean', 'dim': 768, 'f1_mean': np.float64(0.7271), 'f1_std': np.float64(0.0483), 'oof_f1': 0.7199, 'adj_acc': 0.9531, 'stage_mae': 0.2598, 'gap_train_minus_val': 0.1757, 'wds': '[0.1, 0.01, 0.0001, 0.1, 0.0001]', 'per_class_f1': '[0.954, 0.756, 0.805, 0.584, 0.625, 0.595]'}
+{'encoder': 'siglip_b', 'layer': 'b05_mean', 'dim': 768, 'f1_mean': np.float64(0.732), 'f1_std': np.float64(0.0443), 'oof_f1': 0.7292, 'adj_acc': 0.9579, 'stage_mae': 0.2331, 'gap_train_minus_val': 0.1848, 'wds': '[0.1, 0.1, 0.1, 0.01, 0.1]', 'per_class_f1': '[0.963, 0.756, 0.801, 0.579, 0.62, 0.656]'}
+{'encoder': 'siglip_b', 'layer': 'b06_mean', 'dim': 768, 'f1_mean': np.float64(0.7305), 'f1_std': np.float64(0.0305), 'oof_f1': 0.7291, 'adj_acc': 0.9572, 'stage_mae': 0.2316, 'gap_train_minus_val': 0.1568, 'wds': '[0.1, 0.0001, 0.1, 0.0001, 0.0001]', 'per_class_f1': '[0.956, 0.75, 0.796, 0.535, 0.586, 0.751]'}
+{'encoder': 'siglip_b', 'layer': 'b07_mean', 'dim': 768, 'f1_mean': np.float64(0.7238), 'f1_std': np.float64(0.0359), 'oof_f1': 0.7246, 'adj_acc': 0.9573, 'stage_mae': 0.2384, 'gap_train_minus_val': 0.1665, 'wds': '[0.01, 0.0001, 0.1, 0.0001, 0.1]', 'per_class_f1': '[0.957, 0.73, 0.79, 0.569, 0.587, 0.714]'}
+{'encoder': 'siglip_b', 'layer': 'b08_mean', 'dim': 768, 'f1_mean': np.float64(0.7063), 'f1_std': np.float64(0.0404), 'oof_f1': 0.7064, 'adj_acc': 0.9543, 'stage_mae': 0.2472, 'gap_train_minus_val': 0.206, 'wds': '[0.1, 0.1, 0.1, 0.1, 0.0001]', 'per_class_f1': '[0.958, 0.72, 0.786, 0.562, 0.555, 0.658]'}
+{'encoder': 'siglip_b', 'layer': 'b09_mean', 'dim': 768, 'f1_mean': np.float64(0.7126), 'f1_std': np.float64(0.0251), 'oof_f1': 0.7143, 'adj_acc': 0.9463, 'stage_mae': 0.2528, 'gap_train_minus_val': 0.2058, 'wds': '[0.1, 0.0001, 0.1, 0.1, 0.0001]', 'per_class_f1': '[0.949, 0.737, 0.788, 0.57, 0.546, 0.695]'}
+{'encoder': 'siglip_b', 'layer': 'b10_mean', 'dim': 768, 'f1_mean': np.float64(0.7036), 'f1_std': np.float64(0.0348), 'oof_f1': 0.7042, 'adj_acc': 0.955, 'stage_mae': 0.2416, 'gap_train_minus_val': 0.1965, 'wds': '[0.1, 0.1, 0.01, 0.0001, 0.0001]', 'per_class_f1': '[0.952, 0.72, 0.78, 0.56, 0.54, 0.673]'}
+{'encoder': 'siglip_b', 'layer': 'b11_mean', 'dim': 768, 'f1_mean': np.float64(0.6859), 'f1_std': np.float64(0.0249), 'oof_f1': 0.6864, 'adj_acc': 0.9539, 'stage_mae': 0.2549, 'gap_train_minus_val': 0.2339, 'wds': '[0.0001, 0.1, 0.1, 0.01, 0.1]', 'per_class_f1': '[0.956, 0.709, 0.758, 0.535, 0.495, 0.665]'}
+{'encoder': 'siglip_b', 'layer': 'b12_mean', 'dim': 768, 'f1_mean': np.float64(0.6901), 'f1_std': np.float64(0.0323), 'oof_f1': 0.6875, 'adj_acc': 0.9524, 'stage_mae': 0.2625, 'gap_train_minus_val': 0.2315, 'wds': '[0.1, 0.1, 0.1, 0.1, 0.1]', 'per_class_f1': '[0.951, 0.701, 0.775, 0.512, 0.517, 0.669]'}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+mae_b batch 0 1s
+mae_b batch 20 4s
+mae_b batch 40 7s
+mae_b batch 60 11s
+mae_b batch 80 15s
+mae_b batch 100 18s
+mae_b batch 120 22s
+mae_b batch 140 26s
+mae_b batch 160 30s
+mae_b batch 180 33s
+mae_b batch 200 36s
+mae_b batch 220 40s
+mae_b batch 240 43s
+mae_b batch 260 47s
+mae_b batch 280 50s
+mae_b batch 300 54s
+mae_b batch 320 58s
+mae_b batch 340 62s
+mae_b batch 360 64s
+saved /home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/features/mae_b ['b01_cls', 'b01_mean', 'b02_cls', 'b02_mean', 'b03_cls', 'b03_mean', 'b04_cls', 'b04_mean', 'b05_cls', 'b05_mean', 'b06_cls', 'b06_mean', 'b07_cls', 'b07_mean', 'b08_cls', 'b08_mean', 'b09_cls', 'b09_mean', 'b10_cls', 'b10_mean', 'b11_cls', 'b11_mean', 'b12_cls', 'b12_mean']
+{'encoder': 'mae_b', 'layer': 'b01_cls', 'dim': 768, 'f1_mean': np.float64(0.5112), 'f1_std': np.float64(0.0502), 'oof_f1': 0.5039, 'adj_acc': 0.8727, 'stage_mae': 0.588, 'gap_train_minus_val': 0.1969, 'wds': '[0.1, 0.1, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.863, 0.45, 0.623, 0.379, 0.384, 0.325]'}
+{'encoder': 'mae_b', 'layer': 'b01_mean', 'dim': 768, 'f1_mean': np.float64(0.5833), 'f1_std': np.float64(0.0416), 'oof_f1': 0.5833, 'adj_acc': 0.8957, 'stage_mae': 0.4676, 'gap_train_minus_val': 0.1544, 'wds': '[0.0001, 0.01, 0.1, 0.0001, 0.1]', 'per_class_f1': '[0.917, 0.552, 0.697, 0.484, 0.517, 0.333]'}
+{'encoder': 'mae_b', 'layer': 'b02_cls', 'dim': 768, 'f1_mean': np.float64(0.6373), 'f1_std': np.float64(0.0503), 'oof_f1': 0.6286, 'adj_acc': 0.9121, 'stage_mae': 0.4004, 'gap_train_minus_val': 0.1326, 'wds': '[0.0001, 0.0001, 0.1, 0.1, 0.0001]', 'per_class_f1': '[0.909, 0.597, 0.754, 0.536, 0.445, 0.531]'}
+{'encoder': 'mae_b', 'layer': 'b02_mean', 'dim': 768, 'f1_mean': np.float64(0.6446), 'f1_std': np.float64(0.0526), 'oof_f1': 0.6397, 'adj_acc': 0.9269, 'stage_mae': 0.3564, 'gap_train_minus_val': 0.204, 'wds': '[0.0001, 0.01, 0.01, 0.0001, 0.1]', 'per_class_f1': '[0.936, 0.666, 0.754, 0.52, 0.499, 0.462]'}
+{'encoder': 'mae_b', 'layer': 'b03_cls', 'dim': 768, 'f1_mean': np.float64(0.6577), 'f1_std': np.float64(0.0396), 'oof_f1': 0.6533, 'adj_acc': 0.9272, 'stage_mae': 0.3447, 'gap_train_minus_val': 0.2023, 'wds': '[0.01, 0.001, 0.0001, 0.1, 0.001]', 'per_class_f1': '[0.924, 0.679, 0.767, 0.552, 0.465, 0.532]'}
+{'encoder': 'mae_b', 'layer': 'b03_mean', 'dim': 768, 'f1_mean': np.float64(0.6826), 'f1_std': np.float64(0.035), 'oof_f1': 0.6795, 'adj_acc': 0.9443, 'stage_mae': 0.2787, 'gap_train_minus_val': 0.1896, 'wds': '[0.1, 0.1, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.939, 0.677, 0.784, 0.556, 0.546, 0.576]'}
+{'encoder': 'mae_b', 'layer': 'b04_cls', 'dim': 768, 'f1_mean': np.float64(0.6771), 'f1_std': np.float64(0.0348), 'oof_f1': 0.672, 'adj_acc': 0.9492, 'stage_mae': 0.2852, 'gap_train_minus_val': 0.2038, 'wds': '[0.1, 0.1, 0.01, 0.1, 0.0001]', 'per_class_f1': '[0.931, 0.671, 0.762, 0.553, 0.533, 0.582]'}
+{'encoder': 'mae_b', 'layer': 'b04_mean', 'dim': 768, 'f1_mean': np.float64(0.6932), 'f1_std': np.float64(0.0323), 'oof_f1': 0.6912, 'adj_acc': 0.9535, 'stage_mae': 0.2602, 'gap_train_minus_val': 0.1688, 'wds': '[0.1, 0.01, 0.01, 0.0001, 0.0001]', 'per_class_f1': '[0.946, 0.677, 0.767, 0.56, 0.552, 0.645]'}
+{'encoder': 'mae_b', 'layer': 'b05_cls', 'dim': 768, 'f1_mean': np.float64(0.6808), 'f1_std': np.float64(0.0289), 'oof_f1': 0.675, 'adj_acc': 0.9431, 'stage_mae': 0.304, 'gap_train_minus_val': 0.2032, 'wds': '[0.0001, 0.1, 0.1, 0.1, 0.01]', 'per_class_f1': '[0.92, 0.657, 0.774, 0.553, 0.524, 0.621]'}
+{'encoder': 'mae_b', 'layer': 'b05_mean', 'dim': 768, 'f1_mean': np.float64(0.6943), 'f1_std': np.float64(0.0388), 'oof_f1': 0.6902, 'adj_acc': 0.9436, 'stage_mae': 0.2831, 'gap_train_minus_val': 0.1964, 'wds': '[0.1, 0.1, 0.0001, 0.01, 0.0001]', 'per_class_f1': '[0.936, 0.688, 0.768, 0.548, 0.553, 0.647]'}
+{'encoder': 'mae_b', 'layer': 'b06_cls', 'dim': 768, 'f1_mean': np.float64(0.696), 'f1_std': np.float64(0.0417), 'oof_f1': 0.6892, 'adj_acc': 0.9468, 'stage_mae': 0.2827, 'gap_train_minus_val': 0.1773, 'wds': '[0.1, 0.1, 0.1, 0.0001, 0.01]', 'per_class_f1': '[0.932, 0.688, 0.785, 0.545, 0.563, 0.622]'}
+{'encoder': 'mae_b', 'layer': 'b06_mean', 'dim': 768, 'f1_mean': np.float64(0.7203), 'f1_std': np.float64(0.0464), 'oof_f1': 0.7161, 'adj_acc': 0.9509, 'stage_mae': 0.2465, 'gap_train_minus_val': 0.1886, 'wds': '[0.0001, 0.1, 0.1, 0.1, 0.0001]', 'per_class_f1': '[0.948, 0.74, 0.806, 0.54, 0.596, 0.666]'}
+{'encoder': 'mae_b', 'layer': 'b07_cls', 'dim': 768, 'f1_mean': np.float64(0.7159), 'f1_std': np.float64(0.0407), 'oof_f1': 0.7103, 'adj_acc': 0.9511, 'stage_mae': 0.2592, 'gap_train_minus_val': 0.1855, 'wds': '[0.1, 0.01, 0.0001, 0.1, 0.0001]', 'per_class_f1': '[0.943, 0.698, 0.787, 0.549, 0.632, 0.653]'}
+{'encoder': 'mae_b', 'layer': 'b07_mean', 'dim': 768, 'f1_mean': np.float64(0.7311), 'f1_std': np.float64(0.0363), 'oof_f1': 0.7298, 'adj_acc': 0.9574, 'stage_mae': 0.227, 'gap_train_minus_val': 0.1587, 'wds': '[0.0001, 0.1, 0.0001, 0.1, 0.01]', 'per_class_f1': '[0.959, 0.741, 0.794, 0.587, 0.616, 0.681]'}
+{'encoder': 'mae_b', 'layer': 'b08_cls', 'dim': 768, 'f1_mean': np.float64(0.7255), 'f1_std': np.float64(0.0429), 'oof_f1': 0.7214, 'adj_acc': 0.9584, 'stage_mae': 0.2342, 'gap_train_minus_val': 0.1778, 'wds': '[0.1, 0.1, 0.1, 0.0001, 0.0001]', 'per_class_f1': '[0.957, 0.715, 0.78, 0.578, 0.625, 0.673]'}
+{'encoder': 'mae_b', 'layer': 'b08_mean', 'dim': 768, 'f1_mean': np.float64(0.7378), 'f1_std': np.float64(0.0432), 'oof_f1': 0.7364, 'adj_acc': 0.9607, 'stage_mae': 0.2171, 'gap_train_minus_val': 0.1597, 'wds': '[0.1, 0.1, 0.0001, 0.0001, 0.1]', 'per_class_f1': '[0.964, 0.744, 0.795, 0.57, 0.628, 0.718]'}
+{'encoder': 'mae_b', 'layer': 'b09_cls', 'dim': 768, 'f1_mean': np.float64(0.7157), 'f1_std': np.float64(0.0566), 'oof_f1': 0.7131, 'adj_acc': 0.9573, 'stage_mae': 0.2439, 'gap_train_minus_val': 0.195, 'wds': '[0.1, 0.0001, 0.1, 0.0001, 0.001]', 'per_class_f1': '[0.964, 0.711, 0.77, 0.567, 0.626, 0.641]'}
+{'encoder': 'mae_b', 'layer': 'b09_mean', 'dim': 768, 'f1_mean': np.float64(0.7273), 'f1_std': np.float64(0.0586), 'oof_f1': 0.725, 'adj_acc': 0.9541, 'stage_mae': 0.2372, 'gap_train_minus_val': 0.1406, 'wds': '[0.0001, 0.1, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.955, 0.738, 0.793, 0.607, 0.602, 0.654]'}
+{'encoder': 'mae_b', 'layer': 'b10_cls', 'dim': 768, 'f1_mean': np.float64(0.7171), 'f1_std': np.float64(0.0605), 'oof_f1': 0.7116, 'adj_acc': 0.9531, 'stage_mae': 0.2436, 'gap_train_minus_val': 0.1881, 'wds': '[0.01, 0.01, 0.1, 0.1, 0.1]', 'per_class_f1': '[0.965, 0.741, 0.771, 0.575, 0.588, 0.63]'}
+{'encoder': 'mae_b', 'layer': 'b10_mean', 'dim': 768, 'f1_mean': np.float64(0.7295), 'f1_std': np.float64(0.0497), 'oof_f1': 0.7282, 'adj_acc': 0.9609, 'stage_mae': 0.2285, 'gap_train_minus_val': 0.178, 'wds': '[0.01, 0.0001, 0.0001, 0.1, 0.1]', 'per_class_f1': '[0.966, 0.73, 0.781, 0.573, 0.591, 0.729]'}
+{'encoder': 'mae_b', 'layer': 'b11_cls', 'dim': 768, 'f1_mean': np.float64(0.7141), 'f1_std': np.float64(0.0539), 'oof_f1': 0.7132, 'adj_acc': 0.9513, 'stage_mae': 0.2666, 'gap_train_minus_val': 0.1706, 'wds': '[0.1, 0.01, 0.1, 0.0001, 0.0001]', 'per_class_f1': '[0.947, 0.716, 0.781, 0.538, 0.593, 0.704]'}
+{'encoder': 'mae_b', 'layer': 'b11_mean', 'dim': 768, 'f1_mean': np.float64(0.7368), 'f1_std': np.float64(0.0458), 'oof_f1': 0.7365, 'adj_acc': 0.9617, 'stage_mae': 0.2192, 'gap_train_minus_val': 0.1724, 'wds': '[0.0001, 0.0001, 0.0001, 0.1, 0.0001]', 'per_class_f1': '[0.964, 0.743, 0.804, 0.588, 0.632, 0.689]'}
+{'encoder': 'mae_b', 'layer': 'b12_cls', 'dim': 768, 'f1_mean': np.float64(0.7123), 'f1_std': np.float64(0.0549), 'oof_f1': 0.7086, 'adj_acc': 0.9473, 'stage_mae': 0.2783, 'gap_train_minus_val': 0.1674, 'wds': '[0.1, 0.1, 0.0001, 0.0001, 0.1]', 'per_class_f1': '[0.946, 0.737, 0.789, 0.551, 0.586, 0.641]'}
+{'encoder': 'mae_b', 'layer': 'b12_mean', 'dim': 768, 'f1_mean': np.float64(0.7196), 'f1_std': np.float64(0.0557), 'oof_f1': 0.7184, 'adj_acc': 0.9563, 'stage_mae': 0.2493, 'gap_train_minus_val': 0.1634, 'wds': '[0.1, 0.0001, 0.0001, 0.01, 0.0001]', 'per_class_f1': '[0.952, 0.723, 0.793, 0.554, 0.612, 0.677]'}

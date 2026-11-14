@@ -1,0 +1,37 @@
+{
+ "encoder": "siglip_b",
+ "timm_or_hub": "vit_base_patch16_siglip_224.webli",
+ "size": 224,
+ "policy": "pad",
+ "pad_color": [
+  183,
+  0,
+  219
+ ],
+ "mean": [
+  0.5,
+  0.5,
+  0.5
+ ],
+ "std": [
+  0.5,
+  0.5,
+  0.5
+ ],
+ "layers": [
+  "b01_mean",
+  "b02_mean",
+  "b03_mean",
+  "b04_mean",
+  "b05_mean",
+  "b06_mean",
+  "b07_mean",
+  "b08_mean",
+  "b09_mean",
+  "b10_mean",
+  "b11_mean",
+  "b12_mean"
+ ],
+ "rows": 47173,
+ "seconds": 50
+}
