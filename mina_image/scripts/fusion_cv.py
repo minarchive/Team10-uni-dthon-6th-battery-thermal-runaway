@@ -39,9 +39,20 @@ ap.add_argument("--aug_all", action="store_true")
 ap.add_argument("--aug_copies", type=int, default=1)
 ap.add_argument("--seed", type=int, default=0)
 ap.add_argument("--data", type=Path, default=DATA)
+ap.add_argument("--fast", action="store_true", help="스크리닝용: LightGBM 250 trees / lr 0.06 (약 절반 시간). 같은 실행 안의 변형끼리만 비교할 것")
 a = ap.parse_args()
 sys.path.insert(0, str(a.ts_dir))
 import features as F  # 시계열 팀 코드
+
+if a.fast:
+    _orig_build = F.build_model
+
+    def _fast_build():
+        m = _orig_build()
+        m.set_params(n_estimators=250, learning_rate=0.06)
+        return m
+
+    F.build_model = _fast_build
 
 L = list(range(1, 7))
 BASE0 = list(F.BASE_SIGNALS)
