@@ -6,3 +6,9 @@ logs/latest*
 *_executed.ipynb
 __pycache__/
 .ipynb_checkpoints/
+eda_v2*.html
+eda_v3*.html
+# 생성 노트북(src/make_*.py 로 만든다). 커밋하지 않음
+experiment1.ipynb
+eda_v2.ipynb
+eda_v3.ipynb

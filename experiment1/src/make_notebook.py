@@ -39,6 +39,7 @@ import common as C
 sns.set_theme(style="whitegrid", context="notebook")
 plt.rcParams.update({"figure.dpi": 105, "axes.titlesize": 11, "axes.labelsize": 10})
 LC = dict(zip(range(1, 7), sns.color_palette("viridis_r", 6)))        # 라벨 색 (단계가 높을수록 진하게)
+LCL = [LC[i] for i in range(1, 7)]
 SPC = {"train": "#4C78A8", "validation": "#F58518", "test": "#54A24B"}  # split 색
 BCN = {1: "cylindrical", 2: "pouch", 3: "prismatic"}
 BCC = {1: "#9467BD", 2: "#2CA02C", 3: "#D62728"}
@@ -92,7 +93,7 @@ print("test dt share:", (te.sort_values(["experiment_id", "relative_time_s"]).gr
 print("test: 실험마다 dt 가 5/10/15 가 섞이는지 ->", te.sort_values(["experiment_id", "relative_time_s"]).groupby("experiment_id").relative_time_s.diff().groupby(te.experiment_id).nunique().to_dict())
 """)
 md(r"""
-> **설계 근거**: Test 만 간격이 5/10/15초로 섞인다 → 행 수(`rolling(k rows)`, `shift(k)`) 기반 피처는 train/test 에서 의미가 달라진다.
+> **설계 근거**: Test 는 11개 실험 중 9개가 5초 간격이고, 2개 실험만 10/15초 간격이 섞여 있다 → 행 수(`rolling(k rows)`, `shift(k)`) 기반 피처는 train/test 에서 의미가 달라진다.
 > 그래서 모든 시계열 피처를 **실제 경과시간(초)** 기준으로 계산하고, 학습 실험에서 프레임을 랜덤 skip(1~3칸)한 **간격 증강 사본**으로
 > 같은 조건을 흉내 낸 뒤(건너뛴 행만으로 피처 재계산 → 미래 누수 없음) 6장에서 효과를 검증한다.
 """)
@@ -205,15 +206,16 @@ imp = pd.Series(m.booster_.feature_importance("gain"), index=S + C.COND).sort_va
 imp.head(10).plot.barh(figsize=(6, 3.2)).invert_yaxis(); plt.title("What separates test from train+val (gain)"); plt.show()
 """)
 md(r"""
-> AUC 가 0.5 보다 훨씬 높으면 분포 이동이 존재한다는 뜻이다. 다만 Test 가 11개 실험뿐이라 'AUC 가 높다 = 실험 단위 조건 구성이 다르다' 에 가깝다.
-> → 실험 조건(`bat_cc` 등)에 과의존하는 피처보다, **조건 내 상대 변화(첫 관측 대비, delta, cummax)** 가 일반화에 유리할 가능성이 크다(6장 ablation).
+> **결과**: 센서만으로 test vs train+val 을 구분하는 AUC 가 ≈0.5 → **센서 값 자체의 분포 이동은 거의 없다**. 즉 Train/Test 차이는 센서 스케일이 아니라
+> *실험 구성(bat_class·용량 조합이 다름, test 는 11개뿐)* 과 *샘플링 간격* 에서 온다. 따라서 조건 코드(`bat_cc` 등)에 과의존하지 않고
+> **조건 내 상대 변화(첫 관측 대비, delta, cummax)** 를 쓰는 설계가 안전하다(6장 ablation).
 """)
 code(r"""
 # 라벨별 센서 분포
 feats = ["meas_t1", "meas_t2", "thermal_t", "meas_v", "meas_p", "meas_co2", "meas_co", "meas_hf"]
 fig, axs = plt.subplots(2, 4, figsize=(18, 7))
 for a, f in zip(axs.ravel(), feats):
-    sns.boxplot(data=lab, x="label", y=f, palette=LC, ax=a, fliersize=0.8, linewidth=.8)
+    sns.boxplot(data=lab, x="label", y=f, palette=LCL, ax=a, fliersize=0.8, linewidth=.8)
     if f in ("meas_co2", "meas_co", "meas_hf", "meas_p"): a.set_yscale("symlog", linthresh=1)
     a.set_title(f)
 plt.tight_layout(); plt.show()
@@ -272,7 +274,7 @@ print("가장 흔한 이미지 크기 12개와 bat_class 비율:"); display(top.
 mode = imf.groupby("size").bat_class.agg(lambda s: s.mode().iloc[0]); print(f"크기 -> bat_class 최빈값 규칙 정확도: {(imf['size'].map(mode) == imf.bat_class).mean():.4f}")
 """)
 code(r"""
-l = imf[imf.split != "test"]
+l = imf[imf.split != "test"].assign(label=lambda d: d.label.astype(int))
 fig, ax = plt.subplots(1, 3, figsize=(17, 4.2))
 sns.barplot(data=l, x="label", y="size_w", hue="bat_class", palette=BCC, ax=ax[0], errorbar=None); ax[0].set_title("Mean image width by label x bat_class")
 mix = l.groupby(["label", "bat_class"]).size().unstack(1).fillna(0); (mix.div(mix.sum(1), axis=0)).plot.bar(stacked=True, ax=ax[1], color=[BCC[i] for i in (1, 2, 3)]); ax[1].set_title("bat_class share within each label")
@@ -303,7 +305,7 @@ code(r"""
 # 이미지에서 뽑은 '상대 온도 인덱스' 통계가 라벨을 구분하는가
 fig, axs = plt.subplots(2, 4, figsize=(18, 7))
 for a, f in zip(axs.ravel(), ["img_mean", "img_p90", "img_p99", "img_hot67", "img_hot83", "img_white", "img_edge", "img_center_minus_all"]):
-    sns.violinplot(data=l, x="label", y=f, palette=LC, ax=a, cut=0, linewidth=.6, inner="quartile"); a.set_title(f)
+    sns.violinplot(data=l, x="label", y=f, palette=LCL, ax=a, cut=0, linewidth=.6, inner="quartile"); a.set_title(f)
 plt.tight_layout(); plt.show()
 fig, axs = plt.subplots(1, 3, figsize=(17, 4.2))
 for a, bc in zip(axs, (1, 2, 3)):

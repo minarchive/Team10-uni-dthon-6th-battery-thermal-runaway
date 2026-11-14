@@ -1,0 +1,253 @@
+<title>전처리 민감도 근거</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* layout: 한 열 근거집. 위에서부터 결론 -> 효과 크기 -> 요소별 근거표 -> 그림 -> 한계. 팔레트는 열화상의 차가운 쪽(청회색) + 단일 강조(인디고) */
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --fg:#161b24; --muted:#5a6475; --line:#dde2ea; --accent:#3b5bdb; --accent-soft:#e7ecfd;
+  --good:#2b8a3e; --good-soft:#e3f4e7; --warn:#c2680a; --warn-soft:#fdf0dc; --bad:#c92a2a; --bad-soft:#fbe5e5; --info:#5a6475; --info-soft:#e9edf3;
+  --plate:#ffffff; --bar:#b7c0d1;
+  --font-body:"Noto Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif; --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f131a; --surface:#171c26; --fg:#e8ecf3; --muted:#9aa5b8; --line:#2a3242; --accent:#8da2ff; --accent-soft:#222a45;
+  --good:#6fcf8a; --good-soft:#18301f; --warn:#f0a64a; --warn-soft:#352711; --bad:#ff8585; --bad-soft:#3a1b1b; --info:#9aa5b8; --info-soft:#232a38; --bar:#4a566e; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0f131a; --surface:#171c26; --fg:#e8ecf3; --muted:#9aa5b8; --line:#2a3242; --accent:#8da2ff; --accent-soft:#222a45;
+  --good:#6fcf8a; --good-soft:#18301f; --warn:#f0a64a; --warn-soft:#352711; --bad:#ff8585; --bad-soft:#3a1b1b; --info:#9aa5b8; --info-soft:#232a38; --bar:#4a566e; color-scheme:dark; }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+h1{font-size:clamp(26px,4.4vw,36px);line-height:1.2;margin:0 0 10px;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:20px;margin:0 0 4px;letter-spacing:-.005em;text-wrap:balance}
+h3{font-size:15px;margin:0 0 6px}
+p{margin:0}
+.lead{color:var(--muted);max-width:68ch}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+.sub{color:var(--muted);font-size:13.5px;max-width:72ch;margin-bottom:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.card .k{font-size:12px;color:var(--muted);margin-bottom:4px}
+.card .v{font-family:var(--font-mono);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
+.card .d{font-size:13px;color:var(--muted);margin-top:6px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+.chip{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.c-good{background:var(--good-soft);color:var(--good)} .c-warn{background:var(--warn-soft);color:var(--warn)}
+.c-bad{background:var(--bad-soft);color:var(--bad)} .c-info{background:var(--info-soft);color:var(--info)} .c-acc{background:var(--accent-soft);color:var(--accent)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+th,td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{font-size:12px;color:var(--muted);font-weight:700;background:var(--bg);position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.fig{background:var(--plate);border:1px solid var(--line);border-radius:10px;padding:10px;overflow:hidden}
+.fig img{display:block;width:100%;height:auto;border-radius:4px}
+.cap{font-size:13px;color:var(--muted);margin-top:8px;max-width:78ch}
+.cap b{color:var(--fg)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.gradient{height:22px;border-radius:6px;background:linear-gradient(90deg,#d62dbd 0%,#3a3ad8 17%,#16b8c9 33%,#2fb344 50%,#e9d414 67%,#e03131 83%,#ffffff 100%);border:1px solid var(--line)}
+.axis{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px}
+ol.steps{margin:12px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+svg text{font-family:var(--font-mono);fill:var(--muted);font-size:11px}
+svg .lbl{fill:var(--fg);font-family:var(--font-body);font-size:12px}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding:2px 0 2px 12px;max-width:78ch}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;max-width:80ch}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">열폭주 단계 예측 · experiment1</div>
+  <h1>무엇이 점수를 바꾸는가: 전처리·가공 근거</h1>
+  <p class="lead">피처 스케일링, 이미지 가공, 평가 구성, 규칙 후보를 같은 실험 단위 평가로 측정한 결과입니다. 아직 끝나지 않은 항목은 "측정 중"으로 두고 숫자를 비웠습니다.</p>
+</header>
+
+<section>
+  <div class="cards">
+    <div class="card"><div class="k">평가 구성이 바뀌면 달라지는 점수</div><div class="v">+0.024</div><div class="d">같은 모델, 전체 길이 풀링 0.867 → Test 모사(실험당 500행 상한) 0.891. 개선이 아니라 <b>점수 척도의 이동</b></div></div>
+    <div class="card"><div class="k">규칙 후보 7개 중 유의한 개선</div><div class="v">0 / 7</div><div class="d">실험별 정확도 차이의 95% 신뢰구간이 전부 0을 포함. 풀링 F1 기준 가장 큰 개선 +0.0004</div></div>
+    <div class="card"><div class="k">경계 5곳에서 이미지의 추가 정보</div><div class="v">없음</div><div class="d">센서+이미지 − 센서의 95% 신뢰구간이 모든 경계에서 0을 포함</div></div>
+    <div class="card"><div class="k">스케일링 효과: 선형 / 트리</div><div class="v">+0.029 / ≈0</div><div class="d">선형 모델은 표준화로 0.722 → 0.751. LightGBM은 표준화 전 0.8584 → 후 0.8593으로 사실상 불변</div></div>
+    <div class="card"><div class="k">학습 점수 vs 공식 Validation</div><div class="v">1.00 / 0.88</div><div class="d">Train만 학습했을 때 Train 내 F1 1.0000, Validation 0.8765. 격차 +0.12. 정규화(E7)·조건 크기 제거(E5)로 줄지 않음</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">실제 데이터</div>
+  <h2>사진과 시계열을 같이 보면</h2>
+  <p class="sub">대회 데이터의 실제 열화상 프레임과 센서 시계열입니다. 아래 실험 그림은 각 단계가 시작되는 첫 프레임(위)과 그 실험의 온도, 전압·압력, 가스(아래)를 같은 시간축에 놓았고, 배경 띠가 라벨 구간입니다.</p>
+  <figure class="fig" style="margin:0"><img alt="파우치 셀 한 실험의 단계 시작 프레임과 센서 시계열" src="{{FIG_real_experiment_2}}"><div class="cap"><b>파우치 73Ah 가열 실험.</b> L2는 T1이 45℃에 닿는 355초에 시작해 435초 동안 이어지고, L3~L6은 790~820초 사이 30초 안에 지나갑니다. T1은 그 직전까지 80℃ 아래에 있다가 약 800℃로 튀고, 같은 순간 압력이 급등하며 전압이 0으로 무너집니다. 이런 실험에서는 L3 시작이 "완만한 상승의 끝"이 아니라 급변과 겹칩니다. 가스 농도(초록)는 급변 전부터 서서히 올라 있습니다.</div></figure>
+  <div class="two" style="margin-top:14px">
+    <figure class="fig" style="margin:0"><img alt="원통형 셀 한 실험의 프레임과 시계열" src="{{FIG_real_experiment_1}}"><div class="cap"><b>원통형 가열 실험.</b> 같은 방식으로 그린 그림. 셀이 작아서 카메라에 잡히는 이미지가 57×87 안팎으로 작습니다.</div></figure>
+    <figure class="fig" style="margin:0"><img alt="각형 셀 한 실험의 프레임과 시계열" src="{{FIG_real_experiment_3}}"><div class="cap"><b>각형 가열 실험.</b> 형태가 달라지면 같은 단계라도 온도 스케일과 지속 시간이 크게 다릅니다.</div></figure>
+  </div>
+  <figure class="fig" style="margin-top:14px"><img alt="단계별 열화상 프레임 콜라주" src="{{FIG_real_stage_collage}}"><div class="cap"><b>단계(행) × 배터리 형태(열 묶음)별 프레임.</b> 무작위로 뽑은 프레임입니다. 같은 단계라도 형태에 따라 구도, 해상도, 색 분포가 달라서 절대적인 색만으로 단계를 정하기 어렵습니다.</div></figure>
+  <figure class="fig" style="margin-top:14px"><img alt="이미지 크기별 카메라 구도" src="{{FIG_real_framing}}"><div class="cap"><b>이미지 크기 14종, 크기마다 구도가 다름.</b> 크기가 곧 배터리 형태입니다(색은 형태). 이 때문에 크기는 입력에서 제외하고, 이미지 값은 같은 실험 안에서의 변화로 봐야 합니다.</div></figure>
+</section>
+
+<section>
+  <div class="eyebrow">효과 크기 비교</div>
+  <h2>측정된 변화량을 같은 눈금에 놓으면</h2>
+  <p class="sub">막대는 Macro-F1 변화량입니다. 회색 막대는 비교 대상이 다른 값이라 참고용입니다(다른 모델, 또는 개선이 아닌 척도 변경).</p>
+  <div class="panel"><svg id="effects" viewBox="0 0 880 260" width="100%" role="img" aria-label="측정된 효과 크기 비교"></svg></div>
+  <p class="note" style="margin-top:10px">반복 간 변동(같은 기준 모델을 분할만 바꿔 3번 평가: 0.8863 / 0.8957 / 0.8921)이 0.009 입니다. 후보 규칙의 개선폭은 이 변동 안에 들어갑니다. 그래서 채택 기준을 점수 차이 하나가 아니라 실험 단위 신뢰구간으로 잡았습니다.</p>
+</section>
+
+<section>
+  <div class="eyebrow">요소별 근거</div>
+  <h2>점수에 critical 할 수 있는 요소와 현재 증거</h2>
+  <p class="sub">상태: <span class="chip c-good">측정됨</span> 이 저장소 코드로 직접 측정 · <span class="chip c-acc">부분</span> 일부만 측정 · <span class="chip c-warn">측정 중</span> 실행 중 · <span class="chip c-info">외부 입력</span> 팀원 분석(재현 안 함)</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>요소</th><th>상태</th><th>측정된 효과</th><th>판단</th></tr></thead>
+    <tbody>
+    <tr><td><b>평가 구성</b><br>실험당 500행 상한 + 피처 재계산</td><td><span class="chip c-good">측정됨</span></td><td class="num">0.867 → 0.891<br>(Δ +0.024)</td><td>Test 11개 중 2개가 500행으로 줄어든 실험이라 평가를 맞춤. 긴 실험 25/97개가 프레임의 56%를 차지하므로 전체 길이 풀링은 가중이 다름. <b>모든 비교의 기준을 이것으로 고정</b></td></tr>
+    <tr><td><b>피처 스케일링</b> (선형 모델, 로지스틱 회귀)</td><td><span class="chip c-good">측정됨</span></td><td class="num">스케일링 없음 0.722<br>표준화 0.751 (+0.029)<br>winsorize+log1p 0.704</td><td>스케일에 민감한 모델에서는 표준화가 필수. 다만 winsorize+log1p는 cummax 전 F1은 올랐는데(0.763 → 0.784) cummax 후에는 내려감(0.704). 선형 모델은 cummax가 오탐을 굳히는 쪽으로 작용</td></tr>
+    <tr><td><b>피처 스케일링</b> (LightGBM)</td><td><span class="chip c-good">측정됨</span></td><td class="num">0.8584 → 0.8593<br>(표준화, Δ +0.0009)</td><td>트리는 단조 변환에 불변이라는 이론과 일치. 차이는 결측 대체 방식에서 오는 잡음 수준. <b>LightGBM에는 스케일링이 필요 없음</b></td></tr>
+    <tr><td><b>절대값 vs 실험 내 상대값</b></td><td><span class="chip c-good">측정됨</span></td><td class="num">LightGBM 상대 피처만<br>0.8496 (절대 포함 0.8584)<br>cummax 후 0.8262 vs 0.8528</td><td>상대·변화량 피처만 쓰면 오히려 떨어짐. 절대 수준(온도, 전압, 가스)이 경계 판별에 필요한 정보를 갖고 있어서 <b>상대화로 대체할 수 없고 함께 써야 함</b>. 경계 AUC 격차(within−pooled)는 최대 0.39</td></tr>
+    <tr><td><b>이미지 가공 방식</b><br>흑백, 온도 인덱스, 배경 마스크, 첫 프레임 대비, 64×64 리사이즈</td><td><span class="chip c-good">측정됨</span></td><td class="num">이미지 단독 F1<br>흑백 0.473 → 온도 인덱스 0.693<br>센서에 더한 Δ −0.006 ~ +0.003</td><td>가공은 이미지 단독 성능을 크게 바꾸지만(+0.22) 어떤 가공이든 센서에 더해 얻는 이득이 없음. 첫 프레임 대비 상대화는 이미지만 쓸 때 오히려 낮음(0.515 vs 0.693)</td></tr>
+    <tr><td><b>이미지 크기 지름길</b></td><td><span class="chip c-good">측정됨</span></td><td class="num">크기→bat_class 규칙 정확도 100%<br>크기만 Val F1 0.196</td><td>배터리 형태는 완전히 결정되지만 크기를 입력에 넣어도 점수는 오르지 않음(크기 추가 0.778, 이미지 시계열까지만 쓴 0.774, Validation 기준). 입력에서 제외</td></tr>
+    <tr><td><b>센서 글리치 클리닝</b></td><td><span class="chip c-good">측정됨</span></td><td class="num">바뀐 프레임 Train 63 / Val 6<br>실험 단위 p = 0.13</td><td>규모가 작고 유의하지 않음. 데이터 삭제를 정당화하는 근거 없음</td></tr>
+    <tr><td><b>사건·시계 피처</b> (E1 L2 시계, E2 가열속도, E3 방식별 트리거)</td><td><span class="chip c-good">측정됨</span></td><td class="num">Δ −0.0003 / −0.0003 / +0.0004</td><td>모두 기각. 이 평가에서 기존 피처에 더 얹을 이득이 확인되지 않음</td></tr>
+    <tr><td><b>가중·정규화·구조</b> (E4 실험 균형, E5 조건 크기 제거, E6 순서형+단조)</td><td><span class="chip c-good">측정됨</span></td><td class="num">Δ −0.0016 / −0.0051 / −0.0102</td><td>모두 기각, 방향은 악화 쪽. 특히 E6은 개선 40 / 악화 53 실험</td></tr>
+    <tr><td><b>인과 후처리</b></td><td><span class="chip c-good">측정됨</span></td><td class="num">Test 모사에서<br>raw 0.8914 = cummax 0.8914</td><td>전체 길이에서는 +0.005 였으나 Test 모사에서는 효과 없음. HMM 필터는 어느 설정에서도 이득 없음</td></tr>
+    <tr><td><b>이미지 확률 결합 · 게이팅</b></td><td><span class="chip c-good">측정됨</span></td><td class="num">OOF 0.860 → 0.866<br>(센서+cummax 0.865)</td><td>순이득이 노이즈 범위. 경계별로도 센서에 정보 추가 없음(아래 그림)</td></tr>
+    <tr><td><b>경계 근처 가중, L1 규칙 + 조건부 모델, L2→L3 캐스케이드</b> (라운드 2)</td><td><span class="chip c-warn">측정 중</span></td><td class="num">—</td><td>라운드 1 결과를 읽기 전에 등록한 후보. 아직 실행 전</td></tr>
+    </tbody></table></div>
+</section>
+
+<section>
+  <div class="eyebrow">프로토콜 라운드 1</div>
+  <h2>규칙 후보 7개, 실험 단위 비교</h2>
+  <p class="sub">기준 모델 대비 실험별 정확도 차이와 95% 신뢰구간(97개 실험, 3반복 평균, Test 모사 행). 점이 구간 안의 0을 가로지르면 개선이라고 말할 수 없습니다.</p>
+  <div class="panel"><svg id="forest" viewBox="0 0 880 300" width="100%" role="img" aria-label="후보별 신뢰구간"></svg></div>
+  <div class="tablewrap" style="margin-top:12px"><table>
+    <thead><tr><th>후보</th><th>규칙</th><th>풀링 F1</th><th>Δ 풀링</th><th>3회 중 개선</th><th>Val 부분 Δ</th><th>개선/악화 실험</th><th>판정</th></tr></thead>
+    <tbody id="ptable"></tbody></table></div>
+  <p class="note" style="margin-top:10px">기준(BASE) 풀링 F1 0.8914, 공식 Validation 부분 0.8573. 최종 점검(Train만 학습): Train 내 F1 1.0000, 공식 Validation 0.8765, 격차 +0.12. Test 입력 피처가 Train+Val 범위를 벗어나는 비율은 평균 0.0001로 분포 이탈 문제는 보이지 않음. 채택 기준은 결과를 보기 전에 고정했습니다(점수 Δ ≥ +0.003, 신뢰구간 하한 &gt; 0, 3회 중 2회 이상 개선, Validation 악화 −0.01 이내, 자유 파라미터 없음, 인과성 검사 통과).</p>
+</section>
+
+<section>
+  <div class="eyebrow">이미지 가공</div>
+  <h2>열화상 이미지를 온도 인덱스로 바꾸는 과정</h2>
+  <p class="sub">가공 방식이 달라지면 같은 이미지에서 뽑히는 정보가 달라집니다. 아래 실제 프레임 그림은 같은 실험의 L2와 L4 프레임에 각 처리 단계를 적용한 모습이고, 그 아래 도식은 비교 중인 처리 방식입니다.</p>
+  <figure class="fig" style="margin:0 0 14px"><img alt="실제 프레임에 적용한 이미지 가공 단계" src="{{FIG_real_processing}}"><div class="cap"><b>같은 실험, 위 L2 / 아래 L4.</b> 흑백 변환(2)은 색으로 구분되던 고온 영역의 구조를 밝기 차이로 압축합니다. 온도 인덱스(3)와 배경 마스크(4)에서는 가열 영역 면적이 0.42 → 0.91, 영역 안 p90이 0.37 → 0.83으로 올라 단계 차이가 수치로 드러납니다. 64×64 리사이즈(5)는 분포를 거의 그대로 유지합니다.</div></figure>
+  <div class="two">
+    <div class="panel">
+      <h3>팔레트 → 상대 온도 인덱스(0~1)</h3>
+      <div class="gradient" role="img" aria-label="자홍에서 파랑, 청록, 초록, 노랑, 빨강, 흰색으로 가는 의사색 팔레트"></div>
+      <div class="axis"><span>0 (자홍, 차가움)</span><span>0.5 (초록)</span><span>1 (흰색, 뜨거움)</span></div>
+      <p class="note" style="margin-top:12px">절대 온도가 아닌 RGB 근사입니다. 카메라 구도와 이미지 크기가 13종으로 달라서 인덱스의 절대값은 실험 간에 비교하기 어렵습니다.</p>
+    </div>
+    <div class="panel">
+      <h3>비교 중인 가공 방식</h3>
+      <ol class="steps">
+        <li><b>흑백 통계</b> (공식 베이스라인): L 채널의 평균, 표준편차, 최댓값, p95, p99, 고온 비율</li>
+        <li><b>온도 인덱스 통계</b>: hue를 0~1로 변환한 뒤 백분위수·히스토그램·가장자리 밀도</li>
+        <li><b>배경 마스크</b>: 인덱스 0.12 이하(자홍 배경)를 제외한 가열 영역 면적과 상위 10% 온도</li>
+        <li><b>첫 프레임 대비 상대화</b>: 같은 실험의 첫 프레임 값을 빼서 구도 차이를 제거(과거만 사용)</li>
+        <li><b>64×64 리사이즈</b>: 해상도·종횡비 차이가 통계에 미치는 영향 확인</li>
+      </ol>
+    </div>
+  </div>
+  <figure class="fig" style="margin-top:14px"><img alt="가공 방식별 이미지 단독 Macro-F1" src="{{FIG_image_variants_left}}"><div class="cap"><b>가공 방식이 이미지 단독 성능을 크게 바꿉니다.</b> 공식 베이스라인의 흑백 통계 0.473에서 온도 인덱스 통계 0.693으로 +0.22입니다. 크기만 쓰면 0.283으로 가장 낮습니다. 첫 프레임 대비 상대값(0.515)은 절대값(0.693)보다 낮고, 둘을 합친 것(0.630)도 절대값만보다 낮습니다. 상대화는 실험 간 수준 정보를 버리고, 첫 프레임이 센서 노이즈 프레임이면 어긋나기 때문입니다. 외부 분석의 "실험 내 AUC 0.92"는 같은 실험 안에서 방향이 일관된다는 뜻이라, 프레임 분류 점수와는 다른 척도입니다.</div></figure>
+  <div class="tablewrap" style="margin-top:14px"><table>
+    <thead><tr><th>센서 모델에 더한 이미지 피처</th><th>Macro-F1</th><th>Δ</th><th>실험별 정확도 차이의 95% 신뢰구간</th><th>판정</th></tr></thead>
+    <tbody>
+      <tr><td>(센서만)</td><td class="num">0.8535</td><td class="num">—</td><td class="num">—</td><td><span class="chip c-info">기준</span></td></tr>
+      <tr><td>+ 흑백 통계 (베이스라인)</td><td class="num">0.8552</td><td class="num">+0.0017</td><td class="num">[−0.0017, +0.0081]</td><td><span class="chip c-info">0 포함</span></td></tr>
+      <tr><td>+ 온도 인덱스 통계</td><td class="num">0.8526</td><td class="num">−0.0010</td><td class="num">[−0.0064, +0.0065]</td><td><span class="chip c-info">0 포함</span></td></tr>
+      <tr><td>+ 온도 인덱스 + 배경 마스크</td><td class="num">0.8569</td><td class="num">+0.0034</td><td class="num">[−0.0048, +0.0081]</td><td><span class="chip c-info">0 포함</span></td></tr>
+      <tr><td>+ 첫 프레임 대비 상대값</td><td class="num">0.8477</td><td class="num">−0.0058</td><td class="num">[−0.0132, +0.0014]</td><td><span class="chip c-info">0 포함</span></td></tr>
+    </tbody></table></div>
+  <p class="note" style="margin-top:10px"><b>가공을 어떻게 바꿔도 센서에 더한 이득은 0에서 구분되지 않습니다.</b> 이미지 단독 성능은 가공에 크게 좌우되지만, 센서가 이미 가진 정보를 넘어서지 못합니다. 이 실험은 전체 프레임의 1/3(14,606장) 부표본이고, 이미지 단독 모델에는 실험 조건 피처를 넣지 않았습니다.</p>
+  <figure class="fig" style="margin-top:14px"><img alt="절대값과 첫 프레임 대비 상대값, 전 실험 비교" src="{{FIG_real_relative}}"><div class="cap"><b>첫 프레임을 빼면 어떻게 되나 (97개 실험 전체).</b> 아래 줄의 센서(thermal_t)는 시작점이 0으로 모이고 형태별 기울기 차이가 드러납니다. 위 줄의 이미지 p90은 시작 오프셋은 사라지지만 궤적이 −0.8~+0.9로 여전히 넓게 퍼지고, 일부는 0.83이나 1.0에서 포화합니다. 첫 프레임이 센서 노이즈 프레임인 실험에서는 상대값이 크게 어긋납니다. <b>상대화가 이미지 통계의 실험 간 비교 문제를 해결해 주지는 않습니다.</b></div></figure>
+</section>
+
+<section>
+  <div class="eyebrow">경계별 근거</div>
+  <h2>이미지는 어느 경계에서도 센서에 정보를 더하지 못한다</h2>
+  <p class="sub">각 경계(L1→L2 … L5→L6) 전후 24프레임에서 "경계 이후인가"를 맞히는 AUC입니다.</p>
+  <div class="two">
+    <figure class="fig" style="margin:0"><img alt="경계별 센서, 이미지, 결합 AUC와 이미지의 추가 이득" src="{{FIG_modality}}"><div class="cap"><b>센서와 이미지의 경계 판별력.</b> 오른쪽 막대는 이미지를 더한 이득이며, 녹색은 신뢰구간이 0을 제외하는 경우인데 해당 없음. 이미지만으로는 L2→L3에서 0.739로 가장 낮습니다.</div></figure>
+    <figure class="fig" style="margin:0"><img alt="경계 변위와 오류 프레임의 경계까지 거리" src="{{FIG_displacement}}"><div class="cap"><b>오류의 위치.</b> L1→L2는 변위 0, L2→L3만 ±6프레임 이내 37%. 오류 프레임의 58%가 정답 경계 ±24프레임 안, 24%는 60프레임 넘게 떨어져 있음(구간 단위 오분류).</div></figure>
+  </div>
+  <figure class="fig" style="margin-top:14px"><img alt="신호별 경계 판별력: 실험을 섞은 AUC와 실험 내 AUC" src="{{FIG_boundary_auc}}"><div class="cap"><b>실험 간 보정 문제.</b> 왼쪽(실험을 섞은 AUC)과 오른쪽(실험 안에서 계산한 평균 AUC)의 차이가 큰 신호는 신호 자체는 있으나 실험끼리 값을 비교할 수 없는 경우입니다. 굵은 선 위가 센서 파생, 아래가 이미지 파생 신호.</div></figure>
+</section>
+
+<section>
+  <div class="eyebrow">천장과 외부 비교</div>
+  <h2>경계 지터와 팀 분석</h2>
+  <div class="two">
+    <figure class="fig" style="margin:0"><img alt="경계를 k프레임 어긋나게 했을 때의 Macro-F1" src="{{FIG_jitter}}"><div class="cap"><b>경계 지터 곡선.</b> 모든 경계를 ±k프레임 어긋나게 한 가짜 예측의 F1. 참고선 0.9447은 팀원이 전달한 점수로 출처·분할이 확인되지 않았고, 곡선은 모든 경계에 같은 지터를 가정한 대략적 환산입니다.</div></figure>
+    <figure class="fig" style="margin:0"><img alt="단계별 F1, 실험별 F1 분포, 조건 그룹별 오류 비중" src="{{FIG_team_compare}}"><div class="cap"><b>팀 집계와 같은 패턴.</b> 이 저장소 OOF에서도 L2가 가장 약하고, 파우치가 약하며(L4 0.54, L4/L5 학습 행 125/81), 오류가 소수 실험에 집중(상위 10개 실험이 51%).</div></figure>
+  </div>
+</section>
+
+<footer>
+  <p><b>범위와 한계</b>: 점수는 Train+Validation 97개 실험의 교차검증이며 Test 점수가 아닙니다. 스케일링·상대화 비교는 전체 길이 풀링에서 다른 설정(150 트리, 부표본 학습)으로 한 것이라 프로토콜의 0.8914와 직접 비교하지 않습니다. 후보 규칙의 기각은 "이 평가와 이 모델에서 개선이 확인되지 않았다"는 뜻이지 해롭다는 뜻이 아닙니다.
+  이 페이지에는 대회 데이터의 실제 열화상 프레임과 센서 시계열이 들어 있습니다(sample_id와 실험 id는 표시하지 않음). 비공개 링크지만, 공유 범위를 정할 때 대회의 데이터 취급 규정을 확인해 주세요. 팀원 분석(L2·L3 열화상 비교, 단계별·클래스별 집계)은 외부 입력으로 표시했고 재현하지 않았습니다.</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var css=function(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();};
+  var P=[
+    {id:"E1",name:"L2 시계",pool:0.8911,dp:-0.0003,wins:2,dv:-0.0027,imp:53,wor:36,d:-0.0003,lo:-0.0052,hi:0.0045},
+    {id:"E2",name:"가열속도(레짐)",pool:0.8910,dp:-0.0003,wins:2,dv:0.0016,imp:null,wor:null,d:-0.0002,lo:-0.0040,hi:0.0036},
+    {id:"E3",name:"방식별 트리거",pool:0.8918,dp:0.0004,wins:2,dv:-0.0029,imp:null,wor:null,d:0.0018,lo:-0.0018,hi:0.0058},
+    {id:"E4",name:"실험 균형 가중",pool:0.8898,dp:-0.0016,wins:1,dv:-0.0046,imp:45,wor:46,d:-0.0017,lo:-0.0058,hi:0.0021},
+    {id:"E5",name:"조건 크기 제거",pool:0.8863,dp:-0.0051,wins:0,dv:-0.0065,imp:45,wor:47,d:-0.0038,lo:-0.0083,hi:0.0007},
+    {id:"E6",name:"순서형+단조",pool:0.8812,dp:-0.0102,wins:0,dv:-0.0086,imp:40,wor:53,d:-0.0041,lo:-0.0099,hi:0.0019},
+    {id:"E7",name:"강한 정규화",pool:0.8868,dp:-0.0046,wins:0,dv:-0.0064,imp:36,wor:54,d:-0.0031,lo:-0.0068,hi:0.0006}
+  ];
+  var f=function(x,k){return (x>=0?"+":"")+x.toFixed(k||4);};
+  // 표
+  var tb=document.getElementById("ptable"),h="";
+  P.forEach(function(r){
+    h+="<tr><td><b>"+r.id+"</b></td><td>"+r.name+"</td><td class='num'>"+r.pool.toFixed(4)+"</td><td class='num'>"+f(r.dp)+"</td><td class='num'>"+r.wins+" / 3</td><td class='num'>"+f(r.dv)+"</td><td class='num'>"+(r.imp==null?"—":r.imp+" / "+r.wor)+"</td><td><span class='chip c-bad'>기각</span></td></tr>";
+  });
+  tb.innerHTML=h;
+  // 포레스트 플롯
+  var W=880,H=340,L=190,R=40,T=26,B=40,x0=-0.012,x1=0.008;
+  var X=function(v){return L+(v-x0)/(x1-x0)*(W-L-R);};
+  var s="<line x1='"+X(0)+"' x2='"+X(0)+"' y1='"+T+"' y2='"+(H-B)+"' style='stroke:"+css("--fg")+";stroke-width:1.2'/>";
+  [-0.010,-0.005,0.005].forEach(function(t){s+="<line x1='"+X(t)+"' x2='"+X(t)+"' y1='"+T+"' y2='"+(H-B)+"' style='stroke:"+css("--line")+"'/><text x='"+X(t)+"' y='"+(H-B+16)+"' text-anchor='middle'>"+f(t,3)+"</text>";});
+  s+="<text x='"+X(0)+"' y='"+(H-B+16)+"' text-anchor='middle'>0</text><text x='"+(L+(W-L-R)/2)+"' y='"+(H-6)+"' text-anchor='middle'>기준 대비 실험별 정확도 차이 (95% 신뢰구간)</text>";
+  var rh=(H-B-T)/P.length;
+  P.forEach(function(r,i){
+    var y=T+rh*i+rh/2;
+    s+="<text class='lbl' x='"+(L-12)+"' y='"+(y+4)+"' text-anchor='end' style='fill:"+css("--fg")+"'>"+r.id+"  "+r.name+"</text>";
+    s+="<line x1='"+X(r.lo)+"' x2='"+X(r.hi)+"' y1='"+y+"' y2='"+y+"' style='stroke:"+css("--accent")+";stroke-width:3;stroke-linecap:round;opacity:.75'/>";
+    s+="<circle cx='"+X(r.d)+"' cy='"+y+"' r='5' style='fill:"+css("--accent")+"'/>";
+    s+="<text x='"+X(r.hi)+"' y='"+(y-9)+"' text-anchor='end'>"+f(r.d)+"</text>";
+  });
+  document.getElementById("forest").innerHTML=s;
+  // 효과 크기 막대
+  var E=[
+    {n:"선형 모델: 스케일링 없음→표준화",v:0.029,t:"ref"},
+    {n:"평가 구성: 전체 길이→Test 모사",v:0.024,t:"ref"},
+    {n:"반복 간 변동(기준 모델, 3반복 범위)",v:0.0094,t:"noise"},
+    {n:"LightGBM: 표준화 전→후",v:0.0009,t:"ref"},
+    {n:"규칙 후보 최대 개선 (E3)",v:0.0004,t:"cand"},
+    {n:"규칙 후보 최악 (E6)",v:-0.0102,t:"cand"}
+  ];
+  var W2=880,H2=300,L2=290,R2=60,T2=14,B2=28,a0=-0.015,a1=0.035;
+  var X2=function(v){return L2+(v-a0)/(a1-a0)*(W2-L2-R2);};
+  var s2="<line x1='"+X2(0)+"' x2='"+X2(0)+"' y1='"+T2+"' y2='"+(H2-B2)+"' style='stroke:"+css("--fg")+";stroke-width:1.2'/>";
+  [-0.01,0.01,0.02,0.03].forEach(function(t){s2+="<line x1='"+X2(t)+"' x2='"+X2(t)+"' y1='"+T2+"' y2='"+(H2-B2)+"' style='stroke:"+css("--line")+"'/><text x='"+X2(t)+"' y='"+(H2-B2+16)+"' text-anchor='middle'>"+f(t,2)+"</text>";});
+  var bh=(H2-B2-T2)/E.length;
+  E.forEach(function(e,i){
+    var y=T2+bh*i+bh*0.2,hh=bh*0.6,xa=X2(Math.min(0,e.v)),xb=X2(Math.max(0,e.v));
+    var col=e.t=="cand"?(e.v<0?css("--bad"):css("--accent")):(e.t=="noise"?css("--warn"):css("--bar"));
+    s2+="<text class='lbl' x='"+(L2-12)+"' y='"+(y+hh/2+4)+"' text-anchor='end' style='fill:"+css("--fg")+"'>"+e.n+"</text>";
+    s2+="<rect x='"+xa+"' y='"+y+"' width='"+Math.max(2,xb-xa)+"' height='"+hh+"' rx='3' style='fill:"+col+"'/>";
+    s2+="<text x='"+(e.v>=0?xb+6:xa-6)+"' y='"+(y+hh/2+4)+"' text-anchor='"+(e.v>=0?"start":"end")+"'>"+f(e.v)+"</text>";
+  });
+  document.getElementById("effects").innerHTML=s2;
+})();
+</script>
