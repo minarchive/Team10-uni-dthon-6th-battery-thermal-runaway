@@ -1,0 +1,59 @@
+{
+ "args": {
+  "data_dir": "../data/battery_data_light",
+  "out": "/tmp/claude-1104800031/-home-nxcolelxu-unid/f8014d0f-e16b-4866-b2d7-c66eb9863a4d/scratchpad/mmt_smoke_img",
+  "img": "resnet50",
+  "img_dim": "4",
+  "smooth": "3",
+  "hist": "64",
+  "d": "128",
+  "layers": "1",
+  "heads": "4",
+  "drop": "0.1",
+  "epochs": "1",
+  "bs": "256",
+  "lr": "0.0005",
+  "wd": "0.05",
+  "ls": "0.05",
+  "per_exp": "30",
+  "eval_every": "1",
+  "seeds": "0",
+  "max_folds": "1"
+ },
+ "runs": [
+  {
+   "seed": 0,
+   "cv_post": 0.10926480056892618,
+   "cv_raw": 0.10926480056892618,
+   "cv_per_class": [
+    0.22,
+    0.0,
+    0.436,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "val_post": 0.11905550537363879,
+   "val_per_class": [
+    0.218,
+    0.0,
+    0.496,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "fold": [
+    0.1093
+   ],
+   "curves": [
+    [
+     0.1093
+    ]
+   ]
+  }
+ ],
+ "cv_mean": 0.10926480056892618,
+ "cv_std": 0.0,
+ "val_mean": 0.11905550537363879,
+ "val_std": 0.0
+}

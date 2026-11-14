@@ -1,0 +1,4 @@
+class_weight=none: Train GroupKFold Macro F1 0.8033 ± 0.0219 | Validation Macro F1 0.6778
+class_weight=balanced: Train GroupKFold Macro F1 0.8063 ± 0.0310 | Validation Macro F1 0.6674
+선택: none
+모델 저장: model.joblib

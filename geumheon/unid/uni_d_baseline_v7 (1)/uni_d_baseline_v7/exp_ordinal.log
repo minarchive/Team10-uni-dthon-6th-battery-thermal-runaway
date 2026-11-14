@@ -1,0 +1,16 @@
+multiclass: 698s
+ordinal-balanced: 92s
+ordinal-none: 779s
+
+=== Train CV Macro F1 (GroupKFold 5 × 시드 3, 500행 캡) ===
+           model decode     post     cv  cv_seed_std                    seeds
+      multiclass argmax 확신cummax 0.9069       0.0012 0.9070 / 0.9054 / 0.9083
+      multiclass argmax      raw 0.9058       0.0014 0.9068 / 0.9038 / 0.9068
+    ordinal-none argmax      raw 0.9023       0.0012 0.9020 / 0.9010 / 0.9038
+    ordinal-none    thr      raw 0.9022       0.0011 0.9020 / 0.9010 / 0.9037
+ordinal-balanced    thr      raw 0.8983       0.0026 0.8959 / 0.8972 / 0.9019
+ordinal-balanced argmax      raw 0.8983       0.0025 0.8960 / 0.8972 / 0.9018
+    ordinal-none argmax 확신cummax 0.8980       0.0046 0.8974 / 0.8926 / 0.9039
+    ordinal-none    thr 확신cummax 0.8979       0.0045 0.8974 / 0.8926 / 0.9037
+ordinal-balanced    thr 확신cummax 0.8939       0.0059 0.8876 / 0.8923 / 0.9018
+ordinal-balanced argmax 확신cummax 0.8939       0.0058 0.8876 / 0.8924 / 0.9016
