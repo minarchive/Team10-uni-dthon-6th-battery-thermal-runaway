@@ -1,0 +1,8 @@
+{
+  "vision_seeds": [
+    42,
+    7
+  ],
+  "alpha_trm1": 0.06,
+  "alpha_trm2": 0.06
+}

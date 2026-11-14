@@ -1,0 +1,16 @@
+
+[prior 품질] 2단계 지속시간 예측 MAE(초)
+  Train LOO        전체중앙값 254 | cfg 119 | knn1 109 | knn3 117 | knn5 161 | knn10 153
+  Val (참조=Train)   전체중앙값 175 | cfg 160 | knn1 209 | knn3 199 | knn5 238 | knn10 191
+  상관(spearman) dur2 vs 디스크립터: {'log_t45': 0.63, 'pre_rate60': -0.72, 'pre_rate120': -0.72, 't1_start': 0.11, 'v0': -0.16, 'log_cc': 0.43}
+피처 준비 2s, base 735개
+  seed 0 base       CV 0.9074 (raw 0.9041) L2 0.843 L3 0.906  [448s]
+  seed 0 base+cfg   CV 0.9066 (raw 0.9067) L2 0.837 L3 0.902  [448s]
+  seed 0 base+knn5  CV 0.9023 (raw 0.9032) L2 0.823 L3 0.896  [448s]
+  seed 0 base+knn1  CV 0.9059 (raw 0.9060) L2 0.837 L3 0.901  [448s]
+  seed 0 base+cfg+knn5 CV 0.9035 (raw 0.9036) L2 0.827 L3 0.898  [448s]
+  seed 1 base       CV 0.9123 (raw 0.9122) L2 0.845 L3 0.906  [1520s]
+  seed 1 base+cfg   CV 0.9099 (raw 0.9092) L2 0.837 L3 0.901  [1520s]
+  seed 1 base+knn5  CV 0.9131 (raw 0.9126) L2 0.851 L3 0.908  [1520s]
+  seed 1 base+knn1  CV 0.9109 (raw 0.9104) L2 0.836 L3 0.900  [1520s]
+  seed 1 base+cfg+knn5 CV 0.9126 (raw 0.9114) L2 0.847 L3 0.906  [1520s]
