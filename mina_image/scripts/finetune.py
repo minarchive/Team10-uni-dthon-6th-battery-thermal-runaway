@@ -68,6 +68,7 @@ ap.add_argument("--stack", type=int, default=1, help=">1 이면 현재+과거 (s
 ap.add_argument("--stack_sec", type=float, default=30.0, help="스택된 프레임 간 간격(초)")
 ap.add_argument("--bin23", type=int, default=0, help="1=L2/L3 프레임만으로 학습·조기종료(L2 대 L3 전용 모델). 예측은 모든 프레임에 대해 저장. 센서가 L2/L3 로 본 프레임에서 게이트로 쓰기 위함")
 ap.add_argument("--sens_in", type=int, default=0, help="1=센서 OOF/test 확률(log)을 헤드 입력에 이어 붙여 종단간 학습(센서가 아는 정보는 주어지고 백본은 보완 정보만 학습). linear 헤드 전용, 센서 부분은 항등으로 초기화")
+ap.add_argument("--diff3", type=int, default=0, help="1=입력을 [현재-첫 프레임, 현재-15초 전, 현재-60초 전] 3채널(1채널 차이, 128 중심)로 구성. 과거·첫 프레임만 사용(인과)")
 ap.add_argument("--bs", type=int, default=64)
 ap.add_argument("--aug", type=int, default=1)
 ap.add_argument("--zoom", type=float, default=0.15)
@@ -130,6 +131,7 @@ if a.sens_in:
     assert a.head == "linear" and a.ordinal == 0, "--sens_in 은 linear 헤드, 6-class 전용"
 prev_idx = prev_for(a.prev_sec)
 stack_idx = [prev_for(k * a.stack_sec) for k in range(a.stack)] if a.stack > 1 else None
+DIFF_IDX = [prev_for(1e9), prev_for(15.0), prev_for(60.0)] if a.diff3 else None
 if a.stack > 1:
     assert a.enc.startswith("effnet"), "--stack 은 effnet 전용"
 lab = (df.label.values >= 1) & (df.fold.values >= 0)
@@ -259,6 +261,8 @@ def _load(idx):
 
 
 def batch_imgs(idx):
+    if a.diff3:
+        idx = np.asarray(idx); cur = _load(idx)[..., :1].float(); return torch.cat([((cur - _load(ri[idx])[..., :1].float() + 255.0) / 2.0).clamp(0, 255) for ri in DIFF_IDX], -1).to(torch.uint8)
     if a.stack > 1:
         return torch.cat([_load(si[np.asarray(idx)]) for si in stack_idx], -1)
     cur = _load(idx)

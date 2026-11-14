@@ -30,7 +30,15 @@ ap.add_argument("--heads", default="none", choices=["none", "tr", "cls", "cell"]
 ap.add_argument("--mod_drop", type=float, default=0.0, help="학습 중 이미지 특징을 이 확률로 0 으로(모달리티 드롭아웃)")
 ap.add_argument("--stage2", type=int, default=0, help=">0 이면 2단계 학습: 1단계는 이미지 없이(센서·표만) --epochs, 2단계는 이미지 가지를 0 초기화 잔차로 붙여 이 에폭 동안 작은 lr 로 미세조정")
 ap.add_argument("--lr2", type=float, default=0.1, help="2단계에서 센서·표 가지 lr 배율")
-ap.add_argument("--gas", default="all", choices=["all", "sum"], help="sum=개별 가스 10종을 0 으로, 가스합만 meas_co2 칸에 유지(OOF +0.009)")
+ap.add_argument("--backbone", default="resnet50.a1_in1k", help="이미지 백본(timm). 기본은 resnet50 stage3(기존 경로), 그 외는 features_only 로 stride-16 특징맵을 GAP")
+ap.add_argument("--skip_aug", type=int, default=0, help=">0 이면 학습 배치마다 1~K 칸 간격으로 건너뛴 창을 무작위로 사용(Test 10/15초 간격 모사)")
+ap.add_argument("--dt_chan", type=int, default=0, help="1=창의 각 스텝에 이전 스텝과의 실제 시간차(Δt/5초)를 채널로 사용(건너뛴 창에서도 올바름)")
+ap.add_argument("--eval_stride", type=int, default=0, help="1=각 fold 에서 2칸·3칸 간격 창으로도 OOF 를 예측해 gated 점수를 추가 출력(간격 강건성)")
+ap.add_argument("--bw", type=float, default=0.0, help=">0 이면 정답 경계 ±bw 초 프레임의 손실 가중을 --bw_w 배로")
+ap.add_argument("--bw_w", type=float, default=2.0)
+ap.add_argument("--wide", type=int, default=0, help="1=과충전 행에만 thermal-atmp·T1 상승량 누적최대·T2-T1 누적최소 3개를 받는 선형 항을 로짓에 더함")
+ap.add_argument("--test_dist", type=int, default=0, help="1=샘플링 확률을 Test 그룹 행 구성에 맞춤(500행 상한 x 그룹 배율, scripts/test_dist.py)")
+ap.add_argument("--gas", default="all", choices=["all", "sum", "none"], help="sum=개별 가스 10종을 0 으로, 가스합만 meas_co2 칸에 유지(OOF +0.009)")
 ap.add_argument("--rules", type=int, default=0, help="1=방식별 규칙 신호(thermal-atmp, T2-T1, thermal 기울기 등의 누적 극값, 이벤트 이후 경과)를 과충전/가열 분리 복사본으로 헤드 입력에 추가")
 ap.add_argument("--wcell", type=int, default=0, help="1=샘플링 확률을 (bat_class x 단계) 칸별 역빈도^power 로(파우치 소수 단계 보강)")
 ap.add_argument("--minmax", type=int, default=0, help="1=센서를 학습 라벨 행 기준 Min-Max(0~1)로 정규화")
@@ -68,6 +76,8 @@ y_all = tb.label.values.astype(int) - 1          # 라벨 없음(test) = -2
 fold_all = tb.fold.values
 lab = (tb.label.values >= 1) & (fold_all >= 0)
 te_idx = np.where(tb.label.values == -1)[0]
+if a.gas == "none":
+    for _g in ["meas_ch4", "meas_co", "meas_co2", "meas_hcn", "meas_hcl", "meas_hf", "meas_n2o", "meas_no", "meas_no2", "meas_so2"]: raw[_g] = 0.0
 if a.gas == "sum":
     _G = ["meas_ch4", "meas_co", "meas_co2", "meas_hcn", "meas_hcl", "meas_hf", "meas_n2o", "meas_no", "meas_no2", "meas_so2"]
     _s = raw[_G].sum(axis=1)
@@ -89,7 +99,8 @@ S_ = pd.DataFrame({"tr": (raw.tr_method == 2).astype(float), "soc": (raw.soc_sta
 t_all = raw.relative_time_s.values.astype(float)
 eid = raw.experiment_id.values
 FEAT = np.zeros((N, 47), np.float32)
-WIN = np.full((N, a.W), -1, np.int64)
+KS = max(1, a.skip_aug, 3 if a.eval_stride else 1)
+WIN = np.full((N, a.W * KS), -1, np.int64)
 for e, ix in pd.Series(np.arange(N)).groupby(eid).indices.items():
     ix = ix[np.argsort(t_all[ix], kind="stable")]
     z = Z[ix]; rel = z - z[0:1]; t = t_all[ix].astype(np.float32); dt = np.r_[0.0, np.diff(t)] / 5.0
@@ -98,7 +109,7 @@ for e, ix in pd.Series(np.arange(N)).groupby(eid).indices.items():
     extra = np.stack([t1c, t2c, thc, np.minimum.accumulate(vr), np.clip(dt, 0, 6), t / 1500.0], 1).astype(np.float32)
     FEAT[ix] = np.concatenate([z, rel, extra, S_[ix]], 1)
     for p, r in enumerate(ix):                       # 현재 프레임을 마지막 칸, 과거 프레임을 왼쪽으로(부족하면 -1)
-        lo = max(0, p - a.W + 1); seg = ix[lo:p + 1]; WIN[r, a.W - len(seg):] = seg
+        lo = max(0, p - a.W * KS + 1); seg = ix[lo:p + 1]; WIN[r, a.W * KS - len(seg):] = seg
 TABg = None
 RUL = None
 if a.rules:
@@ -122,6 +133,20 @@ if a.rules:
     t45 = pd.Series(np.where(reached, t_all, np.nan)).groupby(raw.experiment_id.values).transform("min").values   # 도달 이후 행에서만 사용(그 행에서 t45 는 과거)
     cols_.append(np.where(reached, t_all - t45, 0.0)); names_.append("since_T1_45")
     cols_.append(reached.astype(np.float32)); names_.append("reached_T1_45")
+    if a.rules >= 2:    # 인과: T1 45℃ 도달 '이후'의 상승 속도(도달 후 평균, 60/120초 시점 값은 그 시점이 지난 행부터 값, 그 전은 0 + 확정 지시자). 미래 값 미사용
+        for c in ("meas_t1", "thermal_t"):
+            x = raw[c].values.astype(float); o = np.zeros((N, 3)); kn = np.zeros((N, 2))
+            for e, ix in pd.Series(np.arange(N)).groupby(eid).indices.items():
+                ix = ix[np.argsort(t_all[ix], kind="stable")]; tt = t_all[ix]; xx = x[ix]; cm = np.maximum.accumulate(raw.meas_t1.values[ix])
+                if not (cm >= 45).any(): continue
+                j = int(np.argmax(cm >= 45)); rr = np.zeros((len(ix), 3)); kk = np.zeros((len(ix), 2))
+                for q, w in enumerate((60, 120)):
+                    k = int(np.searchsorted(tt, tt[j] + w, side="left"))
+                    if k < len(ix): rr[k:, 1 + q] = (xx[k] - xx[j]) / max(tt[k] - tt[j], 5.0); kk[k:, q] = 1.0
+                pidx = np.arange(len(ix)); rr[j + 1:, 0] = (xx[j + 1:] - xx[j]) / np.maximum(tt[j + 1:] - tt[j], 5.0)
+                o[ix] = rr; kn[ix] = kk
+            cols_ += [o[:, 0], o[:, 1], o[:, 2]]; names_ += [c + "_rate_since45", c + "_r60", c + "_r120"]
+            if c == "meas_t1": cols_ += [kn[:, 0], kn[:, 1]]; names_ += ["r60_known", "r120_known"]
     R = np.stack(cols_, 1).astype(np.float32); li_ = np.where(lab)[0]
     mu_r, sd_r = np.nanmean(R[li_], 0), np.nanstd(R[li_], 0) + 1e-6
     R = np.nan_to_num((R - mu_r) / sd_r, nan=0.0).clip(-6, 6)
@@ -148,7 +173,7 @@ _grp = {"none": np.zeros(N, np.int64), "tr": (raw.tr_method.values == 2).astype(
 NH = int(_grp.max()) + 1
 GRPg = torch.from_numpy(_grp).to(dev)
 _dist = np.full(N, np.inf, np.float32); _adj = np.where(y_all >= 0, y_all, 0).astype(np.int64)
-if a.soft_a > 0:      # 학습 라벨에서만 계산(라벨 있는 행). 경계까지의 거리(초)와 경계 건너편 단계
+if a.soft_a > 0 or a.bw > 0:      # 학습 라벨에서만 계산(라벨 있는 행). 경계까지의 거리(초)와 경계 건너편 단계
     for _e, _ix in pd.Series(np.arange(N)).groupby(eid).indices.items():
         _ix = _ix[np.argsort(t_all[_ix], kind="stable")]; _yy = y_all[_ix]
         if (_yy < 0).any(): continue
@@ -160,6 +185,16 @@ if a.soft_a > 0:      # 학습 라벨에서만 계산(라벨 있는 행). 경계
 DISTg = torch.from_numpy(_dist).to(dev); ADJg = torch.from_numpy(_adj).to(dev)
 FEATg = torch.from_numpy(FEAT).to(dev)
 WINg = torch.from_numpy(WIN).to(dev)
+POS = {sx: torch.as_tensor(a.W * KS - 1 - sx * np.arange(a.W - 1, -1, -1), device=dev) for sx in range(1, KS + 1)}
+TIMEg = torch.from_numpy(t_all.astype(np.float32)).to(dev); DTCOL = 2 * len(SIG) + 4
+STRIDE = [1]
+_oc_all = (raw.tr_method.values == 2).astype(np.float32); OCg = torch.from_numpy(_oc_all).to(dev); WFg = None
+if a.wide:
+    _w = np.zeros((N, 3), np.float32)
+    for _e, _ix in pd.Series(np.arange(N)).groupby(eid).indices.items():
+        _ix = _ix[np.argsort(t_all[_ix], kind="stable")]; _d = raw.iloc[_ix]
+        _w[_ix, 0] = np.maximum.accumulate((_d.thermal_t - _d.atmp_t).values); _w[_ix, 1] = np.maximum.accumulate((_d.meas_t1 - _d.meas_t1.iloc[0]).values); _w[_ix, 2] = np.minimum.accumulate((_d.meas_t2 - _d.meas_t1).values)
+    _li = np.where(lab)[0]; _w = np.nan_to_num((_w - _w[_li].mean(0)) / (_w[_li].std(0) + 1e-6)).clip(-6, 6); WFg = torch.from_numpy(_w.astype(np.float32)).to(dev)
 nf = FEAT.shape[1] + 1
 imgs = np.load(ROOT / "data" / "img224_pad.npy", mmap_mode="r") if not a.no_img else None
 log(f"N={N} 라벨 {int(lab.sum())} test {len(te_idx)} | 입력 {nf} | 창 {a.W} | 이미지 {'사용' if not a.no_img else '미사용'}")
@@ -181,20 +216,29 @@ class MM(nn.Module):
         s.register_buffer("cmask", torch.triu(torch.ones(a.W, a.W, dtype=torch.bool), 1))
         hin = d + (a.tab if a.tab else 0) + (RUL.shape[1] if RUL is not None else 0)
         if not a.no_img:
-            m = timm.create_model("resnet50.a1_in1k", pretrained=True)
+            if a.backbone == "resnet50.a1_in1k":
+                m = timm.create_model("resnet50.a1_in1k", pretrained=True); s.fdim = 1024
+                s.img = nn.Sequential(m.conv1, m.bn1, m.act1, m.maxpool, m.layer1, m.layer2, m.layer3)
+            else:
+                m = timm.create_model(a.backbone, pretrained=True, features_only=True); ri = [i for i, r in enumerate(m.feature_info.reduction()) if r == 16][0]
+                m = timm.create_model(a.backbone, pretrained=True, features_only=True, out_indices=(ri,)); s.fdim = m.feature_info.channels()[0]
+                s.img = nn.Sequential(m, nn.Identity()); s.img.forward = lambda x, _m=m: _m(x)[0]
             s.register_buffer("mean", torch.tensor(m.pretrained_cfg["mean"]).view(1, 3, 1, 1)); s.register_buffer("std", torch.tensor(m.pretrained_cfg["std"]).view(1, 3, 1, 1))
-            s.img = nn.Sequential(m.conv1, m.bn1, m.act1, m.maxpool, m.layer1, m.layer2, m.layer3)
             if a.img_dim:
-                s.proj = nn.Sequential(nn.Linear(1024, a.img_dim), nn.LayerNorm(a.img_dim))
+                s.proj = nn.Sequential(nn.Linear(s.fdim, a.img_dim), nn.LayerNorm(a.img_dim))
                 hin += a.img_dim
             else:
-                hin += 1024
-            s.fdim = a.img_dim or 1024
+                hin += s.fdim
+            s.fdim = a.img_dim or s.fdim
+        if a.wide: s.wide = nn.Linear(3, 6)
         s.heads = nn.ModuleList([nn.Sequential(nn.Dropout(0.3), nn.Linear(hin, 256), nn.ReLU(), nn.Dropout(0.3), nn.Linear(256, 6)) for _ in range(NH)])
 
     def forward(s, win, im=None):
         valid = (win >= 0).float()
         x = FEATg[win.clamp(min=0)] * valid[..., None]
+        if a.dt_chan:
+            tt = TIMEg[win.clamp(min=0)]; prev = torch.cat([tt[:, :1], tt[:, :-1]], 1); vp = torch.cat([torch.zeros_like(valid[:, :1]), valid[:, :-1]], 1)
+            x = torch.cat([x[..., :DTCOL], (((tt - prev) / 5.0).clamp(0, 6) * valid * vp)[..., None], x[..., DTCOL + 1:]], -1)
         x = torch.cat([x, valid[..., None]], -1)
         h = s.enc(s.inp(x) + s.pos, mask=s.cmask)[:, -1]
         if TABg is not None: h = torch.cat([h, TABg[win[:, -1]]], 1)
@@ -206,25 +250,29 @@ class MM(nn.Module):
             if a.img_dim: f = s.proj(f)
             if s.training and a.mod_drop > 0: f = f * (torch.rand(f.shape[0], 1, device=f.device) > a.mod_drop).float()
           h = torch.cat([h, f.to(h.dtype)], 1)
-        if NH == 1: return s.heads[0](h)
-        out = torch.stack([hd(h) for hd in s.heads], 0)                       # (NH,B,6)
-        return out[GRPg[win[:, -1]], torch.arange(h.shape[0], device=h.device)]
+        if NH == 1: lg = s.heads[0](h)
+        else:
+            out = torch.stack([hd(h) for hd in s.heads], 0)                       # (NH,B,6)
+            lg = out[GRPg[win[:, -1]], torch.arange(h.shape[0], device=h.device)]
+        if a.wide: lg = lg + s.wide(WFg[win[:, -1]]).to(lg.dtype) * OCg[win[:, -1]][:, None]
+        return lg
 
 
 IMG_ON = [not a.stage2]
 
 
 def batch(idx):
-    return WINg[torch.as_tensor(idx, device=dev)], (load_imgs(idx) if (not a.no_img and IMG_ON[0]) else None)
+    return WINg[torch.as_tensor(idx, device=dev)][:, POS[STRIDE[0]]], (load_imgs(idx) if (not a.no_img and IMG_ON[0]) else None)
 
 
 @torch.no_grad()
-def predict(net, idx, bs=256):
-    net.eval(); out = []
+def predict(net, idx, bs=256, stride=1):
+    net.eval(); out = []; STRIDE[0] = stride
     for i in range(0, len(idx), bs):
         w, im = batch(idx[i:i + bs])
         with torch.autocast("cuda", dtype=torch.bfloat16):
             out.append(torch.softmax(net(w, im).float(), 1).cpu())
+    STRIDE[0] = 1
     return torch.cat(out).numpy()
 
 
@@ -234,7 +282,7 @@ if a.smoke:
     keep = np.sort(rng.choice(np.where(lab)[0], 3000, replace=False)); lab = np.zeros(N, bool); lab[keep] = True
 fr_all = tb.assign(experiment_id=tb.experiment_id.astype(str))
 pos = np.cumsum(lab) - 1
-oof = np.zeros((int(lab.sum()), 6), np.float32)
+oof = np.zeros((int(lab.sum()), 6), np.float32); oof_s = {}
 tsum, nd = np.zeros((len(te_idx), 6)), 0
 covered = np.zeros(N, bool)
 for f in [int(x) for x in a.folds.split(",")]:
@@ -245,6 +293,10 @@ for f in [int(x) for x in a.folds.split(",")]:
     cnt = np.bincount(y_all[itr], minlength=6); pw = (1.0 / np.maximum(cnt, 1)) ** a.power; p = pw[y_all[itr]]
     if a.wcell:
         ck = raw.bat_class.values[itr].astype(int) * 10 + y_all[itr]; cc_ = pd.Series(ck).map(pd.Series(ck).value_counts()).values.astype(float); p = cc_ ** (-a.power)
+    if a.test_dist:
+        import test_dist as TD
+        if "_TDM" not in globals(): _TDM = TD.group_mult()
+        p = p * TD.row_weights(raw.bat_class.values[itr], raw.tr_method.values[itr], eid[itr], _TDM)
     p = p / p.sum()
     n_ep = max(1, int(a.frac * len(itr))); spe = math.ceil(n_ep / a.bs)
     best, bstate = -1, None
@@ -262,15 +314,17 @@ for f in [int(x) for x in a.folds.split(",")]:
                 if len(b) < 2: continue
                 sc = min(1.0, (step + 1) / max(1, spe // 2)) * 0.5 * (1 + math.cos(math.pi * step / total))
                 for g, bl in zip(opt.param_groups, base): g["lr"] = bl * sc
-                w, im = batch(b); yb = torch.from_numpy(y_all[b]).long().to(dev)
+                if a.skip_aug: STRIDE[0] = int(rng.integers(1, a.skip_aug + 1))
+                w, im = batch(b); STRIDE[0] = 1; yb = torch.from_numpy(y_all[b]).long().to(dev)
                 with torch.autocast("cuda", dtype=torch.bfloat16):
                     lg = net(w, im)
+                bb = torch.as_tensor(b, device=dev); wb = (1 + (a.bw_w - 1) * (DISTg[bb] <= a.bw).float()) if a.bw > 0 else torch.ones(len(b), device=dev)
                 if a.soft_a > 0:
-                    bb = torch.as_tensor(b, device=dev); aa = a.soft_a * (1 - DISTg[bb] / a.soft_D).clamp(0, 1)
+                    aa = a.soft_a * (1 - DISTg[bb] / a.soft_D).clamp(0, 1)
                     tgt = (1 - aa)[:, None] * Fn.one_hot(yb, 6).float() + aa[:, None] * Fn.one_hot(ADJg[bb], 6).float(); tgt = tgt * 0.95 + 0.05 / 6
-                    loss = -(tgt * Fn.log_softmax(lg.float(), 1)).sum(1).mean()
+                    loss = (-(tgt * Fn.log_softmax(lg.float(), 1)).sum(1) * wb).sum() / wb.sum()
                 else:
-                    loss = Fn.cross_entropy(lg.float(), yb, label_smoothing=0.05)
+                    loss = (Fn.cross_entropy(lg.float(), yb, label_smoothing=0.05, reduction="none") * wb).sum() / wb.sum()
                 opt.zero_grad(set_to_none=True); loss.backward(); nn.utils.clip_grad_norm_(net.parameters(), 1.0); opt.step(); tl += loss.item(); step += 1
             pm = predict(net, imon); fm = mf1(y_all[imon], pm.argmax(1))
             log(f"fold {f} {tag} ep {ep + 1}/{n_epochs} loss {tl / spe:.3f} mon_f1 {fm:.3f} ({time.time() - t0:.0f}s)")
@@ -289,6 +343,8 @@ for f in [int(x) for x in a.folds.split(",")]:
         run_phase(a.stage2, a.lr2, "P2(+이미지)")
     net.load_state_dict(bstate)
     pv = predict(net, va); oof[pos[va]] = pv; covered[va] = True
+    if a.eval_stride:
+        for sx in (2, 3): oof_s.setdefault(sx, np.zeros_like(oof))[pos[va]] = predict(net, va, stride=sx)
     tsum += predict(net, te_idx); nd += 1
     fv = fr_all.iloc[va].reset_index(drop=True)
     log(f"== fold {f}: outer F1 argmax {mf1(y_all[va], pv.argmax(1)):.4f} | 후처리 {f1_score(y_all[va] + 1, F.postprocess(fv, pv, 0.7), labels=L, average='macro'):.4f}")
@@ -310,6 +366,8 @@ if not a.smoke:
     for w in (0.3,):
         pbl = F.postprocess(fr, (1 - w) * so + w * gate(oof), 0.7); print(f"   규칙 후처리 후 LightGBM 블렌드 w={w}: {f1(pbl):.4f} ({f1(pbl) - f1(ps):+.4f})")
     np.save(ROOT / "outputs" / "preds" / f"ft_mm_{a.name}_oof_gated.npy", gate(oof).astype(np.float32))
+    for sx, os_ in oof_s.items():
+        pgs = F.postprocess(fr, gate(os_), 0.7); print(f"== {a.name} 간격 {sx}칸(={5 * sx}초) 창으로 예측: gated OOF {f1(pgs):.4f} (간격 1칸 대비 {f1(pgs) - f1(pg):+.4f}) | 단계별 {np.round(f1_score(y, pgs, labels=L, average=None), 3).tolist()}")
     print(f"\n== {a.name} 단독 OOF F1 {f1(pe):.4f} (argmax {f1(oof.argmax(1) + 1):.4f}) | LightGBM {f1(ps):.4f} | 단계별 {np.round(f1_score(y, pe, labels=L, average=None), 3).tolist()}")
     bf = fs(ps)
     for w in (0.2, 0.3, 0.5):
