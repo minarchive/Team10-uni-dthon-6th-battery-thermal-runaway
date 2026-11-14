@@ -32,6 +32,7 @@ ap.add_argument("--policy", default="pad", choices=["pad", "distort"])
 ap.add_argument("--bs", type=int, default=128)
 ap.add_argument("--workers", type=int, default=8)
 ap.add_argument("--limit", type=int, default=0, help="스모크 테스트용 무작위 N행")
+ap.add_argument("--force", action="store_true", help="이미 추출된 태그도 다시 추출")
 a = ap.parse_args()
 
 df = table()
@@ -41,6 +42,9 @@ if a.limit:
     idx = np.sort(np.random.default_rng(0).choice(len(df), a.limit, replace=False))
     tag += "_smoke"
 out = ROOT / "features" / tag
+if (out / "meta.json").exists() and not a.force:
+    print(f"skip {tag}: already extracted (use --force to redo)")
+    raise SystemExit(0)
 out.mkdir(parents=True, exist_ok=True)
 np.save(out / "idx.npy", idx)
 paths = df.img_path.values[idx]

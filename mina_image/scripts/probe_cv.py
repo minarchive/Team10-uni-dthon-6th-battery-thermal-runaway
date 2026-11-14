@@ -75,8 +75,17 @@ def fit(Xtr, ytr, Xva, yva, wd):
     return m, mu, sd, best
 
 
+res_csv = ROOT / "outputs" / "logs" / "probe_results.csv"
+done = set()
+if res_csv.exists():
+    _r = pd.read_csv(res_csv)
+    done = set(_r[_r.encoder == a.encoder].layer)
+
 for layer in layers:
-    X = torch.from_numpy(np.load(fdir / f"{layer}.npy")).float().to(dev)
+    if layer in done:
+        print(f"skip {a.encoder} {layer}: already in probe_results.csv", flush=True)
+        continue
+    X =torch.from_numpy(np.load(fdir / f"{layer}.npy")).float().to(dev)
     Y = torch.from_numpy(np.where(lab, y_all, 0)).long().to(dev)
     oof = np.zeros((int(lab.sum()), NUM_CLASSES), dtype=np.float32)
     pos = np.cumsum(lab) - 1  # df 행 -> oof 행
