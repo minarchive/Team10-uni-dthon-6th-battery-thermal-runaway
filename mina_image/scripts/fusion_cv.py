@@ -31,6 +31,7 @@ ap.add_argument("--aug", action="store_true")
 ap.add_argument("--aug_all", action="store_true", help="짧은 실험도 다시 뽑아 증강")
 ap.add_argument("--aug_copies", type=int, default=1)
 ap.add_argument("--seed", type=int, default=0)
+ap.add_argument("--data", type=Path, default=DATA, help="battery_data_light 경로(기본: data_link)")
 a = ap.parse_args()
 sys.path.insert(0, str(a.ts_dir))
 import features as F  # 시계열 팀 코드
@@ -39,7 +40,7 @@ L = list(range(1, 7))
 BASE0 = list(F.BASE_SIGNALS)
 rng = np.random.default_rng(a.seed)
 
-sens = pd.concat([pd.read_csv(DATA / s / f"{s}.csv", dtype={"sample_id": "string", "experiment_id": "string"}).assign(split=s)
+sens = pd.concat([pd.read_csv(a.data / s / f"{s}.csv", dtype={"sample_id": "string", "experiment_id": "string"}).assign(split=s)
                   for s in ["train", "validation"]], ignore_index=True)
 sens["sample_id"] = sens.sample_id.astype(str)
 sens["experiment_id"] = sens.experiment_id.astype(str)
@@ -55,8 +56,16 @@ if a.models:
     assert len(df) == len(sens), "image_probs 와 센서 CSV 행이 맞지 않음"
     variants["시계열+이미지"] = True
 else:
-    folds = pd.read_parquet(ROOT / "data" / "folds.parquet")[["sample_id", "fold"]]
-    df = sens.merge(folds, on="sample_id", how="inner")
+    fp = ROOT / "data" / "folds.parquet"
+    if fp.exists():
+        folds = pd.read_parquet(fp)[["sample_id", "fold"]]
+        df = sens.merge(folds, on="sample_id", how="inner")
+    else:  # make_folds.py 와 같은 절차(같은 순서·같은 시드)로 즉석 생성
+        from sklearn.model_selection import StratifiedGroupKFold
+        df = sens.copy()
+        df["fold"] = -1
+        for f_, (_, va_) in enumerate(StratifiedGroupKFold(5, shuffle=True, random_state=42).split(df, df.label, df.experiment_id)):
+            df.loc[df.index[va_], "fold"] = f_
 df = df.reset_index(drop=True)
 print("rows", len(df), "experiments", df.experiment_id.nunique(), "| 변형:", list(variants), "| aug:", a.aug, flush=True)
 
