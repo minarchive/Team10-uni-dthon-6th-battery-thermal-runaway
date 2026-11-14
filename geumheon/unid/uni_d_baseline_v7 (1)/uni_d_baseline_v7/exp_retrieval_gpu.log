@@ -1,6 +1,3 @@
-name, memory.total [MiB]
-NVIDIA RTX 6000 Ada Generation, 49140 MiB
-
 [prior 품질] 2단계 지속시간 예측 MAE(초)
   Train LOO        전체중앙값 254 | cfg 119 | knn1 109 | knn3 117 | knn5 161 | knn10 153
   Val (참조=Train)   전체중앙값 175 | cfg 160 | knn1 209 | knn3 199 | knn5 238 | knn10 191

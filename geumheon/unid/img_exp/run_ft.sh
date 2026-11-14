@@ -17,5 +17,5 @@ DATA=${DATA:-/home/nxcolelxu/unid/data/battery_data_light}
 MODEL=$1; shift
 nvidia-smi -L
 
-# 소형 백본 파인튜닝 (대회 서버 RTX 5080 16GB에서도 batch 64 AMP로 충분)
+# 소형 백본 파인튜닝
 python finetune.py --data_dir $DATA --model $MODEL --out ft_$MODEL "$@" 2>&1 | tee logs/ft_$MODEL.log

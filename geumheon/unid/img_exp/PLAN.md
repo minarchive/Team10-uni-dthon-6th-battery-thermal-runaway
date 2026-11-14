@@ -7,8 +7,6 @@
 
 | 항목 | 내용 |
 |---|---|
-| 학습 서버 | SLURM, `--constraint ada` (RTX 6000 Ada 48GB × 4 / 노드, 3노드). smi.sh와 같은 방식으로 제출 |
-| 대회 서버 | RTX 5080 16GB → 여기서 고른 모델은 **16GB에서 batch 64 AMP로 돌아가는 크기**(≤ 30M 파라미터)로 제한 |
 | Python | `/home/nxcolelxu/unid/venv` (python3 -m venv, torch cu124, lightgbm, scikit-learn, transformers, timm) |
 | 데이터 | `/home/nxcolelxu/unid/data/battery_data_light` (setup.sh의 DATA_URL을 gdown으로 받음) |
 | 사전학습 가중치 | HF `facebook/dinov2-small`, `facebook/dinov2-base` (Apache-2.0), timm `convnext_tiny`, `efficientnet_b0` (ImageNet). 캐시 `hf_cache/` |

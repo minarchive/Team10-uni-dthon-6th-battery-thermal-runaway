@@ -9,7 +9,7 @@ v1(joint_moe.py) 대비 바뀐 점
      같은 크기끼리 배치를 묶어 패딩 없이 DINOv2에 넣는다(위치 임베딩은 HF가 크기별로 보간).
      원본 폭·높이·비율을 게이트 입력에 추가.
   3. 학습 20 에폭 (v1 10).
-  4. GPU 메모리 한도 --mem_gb(기본 15GB)를 강제 → 학습이 끝까지 돌면 16GB GPU에서 돌아간다는 확인.
+  4. GPU 메모리 한도 --mem_gb를 적용한다.
 
 학습·검증 구성, 손실, 출력 형식은 v1과 같다 (JOINT_MOE.md 참고).
     python joint_moe2.py --data_dir <data> --out joint_moe2_s_u4 [--folds 0,3]
@@ -316,7 +316,7 @@ def main():
     ap.add_argument('--hist', type=int, default=64, help='센서 디코더가 보는 과거 행 수 (현재 포함)')
     ap.add_argument('--min_side', type=int, default=112)
     ap.add_argument('--max_side', type=int, default=336)
-    ap.add_argument('--mem_gb', type=float, default=15.0, help='PyTorch GPU 메모리 한도 (16GB GPU 재현)')
+    ap.add_argument('--mem_gb', type=float, default=15.0, help='PyTorch GPU 메모리 한도')
     ap.add_argument('--eval_every', type=int, default=2)
     ap.add_argument('--out', type=Path, required=True)
     ap.add_argument('--folds', default=None)
