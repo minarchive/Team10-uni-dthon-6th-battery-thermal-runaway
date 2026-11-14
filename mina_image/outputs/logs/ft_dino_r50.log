@@ -1,0 +1,83 @@
+nohup: ignoring input
+Using cache found in /home/ubuntu/.cache/torch/hub/facebookresearch_dino_main
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+fold 0 ep 1/12 loss 1.399 mon_f1 0.613 (9s)
+fold 0 ep 2/12 loss 0.878 mon_f1 0.762 (8s)
+fold 0 ep 3/12 loss 0.782 mon_f1 0.778 (8s)
+fold 0 ep 4/12 loss 0.767 mon_f1 0.773 (8s)
+fold 0 ep 5/12 loss 0.752 mon_f1 0.779 (8s)
+fold 0 ep 6/12 loss 0.736 mon_f1 0.783 (8s)
+fold 0 ep 7/12 loss 0.735 mon_f1 0.786 (8s)
+fold 0 ep 8/12 loss 0.725 mon_f1 0.781 (8s)
+fold 0 ep 9/12 loss 0.726 mon_f1 0.788 (8s)
+fold 0 ep 10/12 loss 0.726 mon_f1 0.786 (8s)
+fold 0 ep 11/12 loss 0.722 mon_f1 0.791 (8s)
+fold 0 ep 12/12 loss 0.720 mon_f1 0.792 (8s)
+== fold 0: outer F1 0.7762 (inner mon 0.792) gap 0.185
+Using cache found in /home/ubuntu/.cache/torch/hub/facebookresearch_dino_main
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+fold 1 ep 1/12 loss 1.388 mon_f1 0.563 (9s)
+fold 1 ep 2/12 loss 0.864 mon_f1 0.646 (9s)
+fold 1 ep 3/12 loss 0.783 mon_f1 0.648 (9s)
+fold 1 ep 4/12 loss 0.767 mon_f1 0.660 (9s)
+fold 1 ep 5/12 loss 0.747 mon_f1 0.655 (9s)
+fold 1 ep 6/12 loss 0.735 mon_f1 0.679 (9s)
+fold 1 ep 7/12 loss 0.730 mon_f1 0.698 (9s)
+fold 1 ep 8/12 loss 0.728 mon_f1 0.697 (9s)
+fold 1 ep 9/12 loss 0.720 mon_f1 0.687 (9s)
+fold 1 ep 10/12 loss 0.720 mon_f1 0.695 (9s)
+fold 1 ep 11/12 loss 0.713 mon_f1 0.695 (9s)
+== fold 1: outer F1 0.7784 (inner mon 0.698) gap 0.175
+Using cache found in /home/ubuntu/.cache/torch/hub/facebookresearch_dino_main
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+fold 2 ep 1/12 loss 1.350 mon_f1 0.591 (9s)
+fold 2 ep 2/12 loss 0.841 mon_f1 0.727 (9s)
+fold 2 ep 3/12 loss 0.767 mon_f1 0.732 (9s)
+fold 2 ep 4/12 loss 0.745 mon_f1 0.707 (9s)
+fold 2 ep 5/12 loss 0.737 mon_f1 0.723 (9s)
+fold 2 ep 6/12 loss 0.724 mon_f1 0.733 (9s)
+fold 2 ep 7/12 loss 0.715 mon_f1 0.736 (9s)
+fold 2 ep 8/12 loss 0.711 mon_f1 0.732 (9s)
+fold 2 ep 9/12 loss 0.710 mon_f1 0.731 (9s)
+fold 2 ep 10/12 loss 0.705 mon_f1 0.736 (9s)
+fold 2 ep 11/12 loss 0.707 mon_f1 0.735 (10s)
+== fold 2: outer F1 0.8420 (inner mon 0.736) gap 0.114
+Using cache found in /home/ubuntu/.cache/torch/hub/facebookresearch_dino_main
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+fold 3 ep 1/12 loss 1.349 mon_f1 0.637 (9s)
+fold 3 ep 2/12 loss 0.835 mon_f1 0.734 (9s)
+fold 3 ep 3/12 loss 0.771 mon_f1 0.742 (9s)
+fold 3 ep 4/12 loss 0.746 mon_f1 0.746 (9s)
+fold 3 ep 5/12 loss 0.726 mon_f1 0.745 (9s)
+fold 3 ep 6/12 loss 0.711 mon_f1 0.761 (9s)
+fold 3 ep 7/12 loss 0.709 mon_f1 0.758 (9s)
+fold 3 ep 8/12 loss 0.708 mon_f1 0.753 (9s)
+fold 3 ep 9/12 loss 0.705 mon_f1 0.738 (9s)
+fold 3 ep 10/12 loss 0.701 mon_f1 0.740 (9s)
+== fold 3: outer F1 0.7060 (inner mon 0.761) gap 0.226
+Using cache found in /home/ubuntu/.cache/torch/hub/facebookresearch_dino_main
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/ubuntu/Team10-uni-dthon-6th-battery-thermal-runaway/mina_image/.venv/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+fold 4 ep 1/12 loss 1.361 mon_f1 0.682 (9s)
+fold 4 ep 2/12 loss 0.852 mon_f1 0.736 (9s)
+fold 4 ep 3/12 loss 0.777 mon_f1 0.786 (9s)
+fold 4 ep 4/12 loss 0.750 mon_f1 0.766 (9s)
+fold 4 ep 5/12 loss 0.735 mon_f1 0.754 (9s)
+fold 4 ep 6/12 loss 0.734 mon_f1 0.774 (9s)
+fold 4 ep 7/12 loss 0.724 mon_f1 0.774 (9s)
+== fold 4: outer F1 0.7326 (inner mon 0.786) gap 0.175
+{'name': 'dino_r50', 'enc': 'dino_r50', 'cut': 4, 'folds': '0,1,2,3,4', 'f1_mean': 0.7671, 'f1_std': 0.0464, 'oof_f1': 0.7679, 'adj_acc': 0.9762, 'stage_mae': 0.1742, 'gap_train_minus_val': 0.1751, 'per_class_f1': '[0.976, 0.736, 0.808, 0.655, 0.662, 0.77]'}
