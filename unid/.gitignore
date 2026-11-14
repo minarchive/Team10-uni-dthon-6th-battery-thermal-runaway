@@ -1,0 +1,22 @@
+# 대회 데이터·대용량 산출물은 git 에 올리지 않음 (OT 규칙: 데이터 반출 금지, GitHub 포함)
+data/
+*.zip
+ai_model/
+venv/
+gdenv/
+hf_cache/
+lgbm_cuda_build/
+
+# 학습 산출물 (임베딩·확률·체크포인트·로그)
+*.npz
+*.npy
+*.joblib
+*.pt
+*.tar.gz
+**/ckpt/
+**/*_models/
+**/models_*/
+img_exp/logs/
+img_exp/parts/
+__pycache__/
+*.pyc
