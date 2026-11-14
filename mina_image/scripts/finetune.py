@@ -77,6 +77,7 @@ imgs = np.load(ROOT / "data" / "img224_pad.npy", mmap_mode="r")
 assert len(imgs) == len(df)
 y_all = df.label.values - 1
 lab = (df.label.values >= 1) & (df.fold.values >= 0)
+te_idx = np.where(df.label.values == -1)[0]  # test 프레임(라벨 없음): fold 모델들의 평균 확률을 저장
 if a.smoke:
     a.epochs, a.folds, a.head_warmup = 1, "0", 0
     keep = np.sort(rng.choice(np.where(lab)[0], 2000, replace=False))
@@ -245,14 +246,18 @@ def run_fold(f):
     pv = predict(net, va)
     sub = rng.choice(itr, min(6000, len(itr)), replace=False)
     gap = mf1(y_all[sub], predict(net, sub).argmax(1)) - mf1(y_all[va], pv.argmax(1))
-    return va, pv, gap, best
+    pt = predict(net, te_idx)
+    return va, pv, gap, best, pt
 
 
 pos = np.cumsum(lab) - 1
 oof = np.zeros((int(lab.sum()), NUM_CLASSES), np.float32)
 fold_f1, gaps, covered = [], [], np.zeros(len(df), bool)
+test_sum, n_folds_done = np.zeros((len(te_idx), NUM_CLASSES), np.float64), 0
 for f in [int(x) for x in a.folds.split(",")]:
-    va, pv, gap, mon = run_fold(f)
+    va, pv, gap, mon, pt = run_fold(f)
+    test_sum += pt
+    n_folds_done += 1
     oof[pos[va]] = pv
     covered[va] = True
     fold_f1.append(mf1(y_all[va], pv.argmax(1)))
@@ -263,6 +268,8 @@ m = covered[lab]
 yl, pl = y_all[lab][m], oof[m].argmax(1)
 (ROOT / "outputs" / "preds").mkdir(parents=True, exist_ok=True)
 np.save(ROOT / "outputs" / "preds" / f"ft_{name}_oof.npy", oof)
+if not a.smoke:
+    np.save(ROOT / "outputs" / "preds" / f"ft_{name}_test.npy", (test_sum / max(1, n_folds_done)).astype(np.float32))
 row = dict(name=name, enc=a.enc, cut=cut, folds=a.folds, f1_mean=float(np.mean(fold_f1)), f1_std=float(np.std(fold_f1)),
            oof_f1=mf1(yl, pl), adj_acc=float((np.abs(pl - yl) <= 1).mean()), stage_mae=float(np.abs(pl - yl).mean()),
            gap_train_minus_val=float(np.mean(gaps)),

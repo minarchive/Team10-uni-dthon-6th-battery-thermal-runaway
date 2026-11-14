@@ -27,6 +27,7 @@ ap.add_argument("--wds", default="1e-4,1e-3,1e-2,1e-1")
 ap.add_argument("--epochs", type=int, default=80)
 ap.add_argument("--lr", type=float, default=2e-3)
 ap.add_argument("--seed", type=int, default=0)
+ap.add_argument("--force", action="store_true", help="이미 결과가 있는 레이어도 다시 계산(test 예측 저장용)")
 a = ap.parse_args()
 
 dev = "cuda" if torch.cuda.is_available() else "cpu"
@@ -34,6 +35,7 @@ fdir = ROOT / "features" / a.encoder
 idx = np.load(fdir / "idx.npy")
 df = table().iloc[idx].reset_index(drop=True)
 lab = (df.label.values >= 1) & (df.fold.values >= 0)
+te = np.where(df.label.values == -1)[0]  # test 프레임: fold 모델 평균 확률을 저장
 y_all = df.label.values - 1
 layers = sorted(p.stem for p in fdir.glob("*.npy") if p.stem != "idx") if a.layers == "all" else a.layers.split(",")
 wds = [float(w) for w in a.wds.split(",")]
@@ -82,7 +84,7 @@ if res_csv.exists():
     done = set(_r[_r.encoder == a.encoder].layer)
 
 for layer in layers:
-    if layer in done:
+    if layer in done and not a.force:
         print(f"skip {a.encoder} {layer}: already in probe_results.csv", flush=True)
         continue
     X =torch.from_numpy(np.load(fdir / f"{layer}.npy")).float().to(dev)
@@ -90,6 +92,7 @@ for layer in layers:
     oof = np.zeros((int(lab.sum()), NUM_CLASSES), dtype=np.float32)
     pos = np.cumsum(lab) - 1  # df 행 -> oof 행
     fold_f1, gaps, chosen = [], [], []
+    tsum, nf = np.zeros((len(te), NUM_CLASSES)), 0
     for f in range(5):
         va = np.where(lab & (df.fold.values == f))[0]
         tr = np.where(lab & (df.fold.values != f))[0]
@@ -106,12 +109,17 @@ for layer in layers:
         with torch.no_grad():
             pv = torch.softmax(m((X[va] - mu) / sd), 1).cpu().numpy()
             ptr = m((X[itr] - mu) / sd).argmax(1).cpu().numpy()
+            if len(te):
+                tsum += torch.softmax(m((X[te] - mu) / sd), 1).cpu().numpy()
+                nf += 1
         oof[pos[va]] = pv
         fold_f1.append(mf1(y_all[va], pv.argmax(1)))
         gaps.append(mf1(y_all[itr], ptr) - fold_f1[-1])
         chosen.append(wd)
     yl, pl = y_all[lab], oof.argmax(1)
     np.save(ROOT / "outputs" / "preds" / f"{a.encoder}__{layer}_oof.npy", oof)
+    if nf:
+        np.save(ROOT / "outputs" / "preds" / f"{a.encoder}__{layer}_test.npy", (tsum / nf).astype(np.float32))
     row = dict(encoder=a.encoder, layer=layer, dim=int(X.shape[1]), f1_mean=np.mean(fold_f1), f1_std=np.std(fold_f1),
                oof_f1=mf1(yl, pl), adj_acc=float((np.abs(pl - yl) <= 1).mean()), stage_mae=float(np.abs(pl - yl).mean()),
                gap_train_minus_val=float(np.mean(gaps)), wds=json.dumps(chosen),
