@@ -52,6 +52,19 @@ Uni-DTHON 배터리 열폭주 6단계 분류(Macro F1)에서 **열화상 이미�
 - 파인튜닝 단계: 낮은 lr, layer-wise lr decay, 소폭 crop/translate, label smoothing, 3시드.
 - (나중에 검토) 파인튜닝용 헤드에 LeakyReLU + Dropout 사용 여부 — frozen probe 단계 결과를 본 뒤 결정.
 
+### 지금까지 결과와 다음 계획 (2026-11-14 후반)
+**위치**: 이미지는 주력 시계열(센서) 모델의 *보조 feature*. 최종 산출물은 프레임별 이미지 확률(OOF/test)과 시간 문맥 feature.
+**결과(5-fold, Macro F1)**: B0(크기·조건) 0.31 / frozen 8종 최고 0.72~0.75(인코더 간 차이는 표준편차 0.03~0.05 이내, 중간 레이어가 마지막보다 높음) / dino_r50 부분 파인튜닝 0.767±0.046(frozen 0.750 대비 +0.018, 후반 단계 L4~L6 개선, 오류는 인접 단계 97.6%).
+**팀원 논의 반영 — 간격**: Train/Val 은 5초 고정, Test 는 5초 9개 실험 + 10·15초가 한 실험 안에서 섞인 2개 실험(3,451행 중 1,000행=29%). 시간 문맥 feature 는 행 수가 아니라 `relative_time_s` 기준으로 만들고, 학습은 5초/10초/15초/혼합{10,15}로 다시 뽑은 시퀀스를 모두 사용(`scripts/temporal_probe.py`).
+**실험 순서(`scripts/run_pipeline.sh`, 순차·재개 가능)**
+1. 시간 문맥 probe: single vs temporal, 간격별(5/10/15/혼합) F1 → 시간 문맥이 단일 프레임보다 나은지, 간격이 달라져도 유지되는지
+2. frozen 최고 레이어의 test 예측 저장(센서 모델 전달용)
+3. 파인튜닝 패널: dino_r50 / mae_b / dinov2_b / resnet50 (동일 5-fold, 동일 하이퍼)
+4. dino_r50 ablation(한 번에 하나): 순서형 soft label, 균형 샘플링, 증강, MLP 헤드(LeakyReLU+Dropout), cut3, lr, epoch
+5. `image_probs.parquet`(sample_id별 OOF/test 확률), 앙상블·오류 겹침 분석(`ensemble_oof.py`), 요약
+**센서 모델과 결합 시 주의**: 이미지 OOF 확률은 `data/folds.parquet` 분할 기준이라, 센서 모델도 같은 fold 를 써야 누수가 없다. test 확률은 5개 fold 모델의 평균.
+**보류**: LoRA(ViT 한정, 용량이 병목이 아닐 가능성), 추가 인코더 탐색, 열화상 특화 가중치 조사.
+
 ## 실행(서버, `mina_image/` 에서)
 `scripts/make_folds.py` → `scripts/baseline_b0.py` → `scripts/extract_features.py --encoder <이름>` → `scripts/probe_cv.py --encoder <이름>` → `scripts/summarize.py`. 라벨별 폴더 복사는 `scripts/split_by_label.py`, 콜라주·통계는 `scripts/eda_label_collage.py`. 인코더 이름: dinov2_s, dinov2_b, convnext_s, resnet50, siglip_b, mae_b, dino_r50. 스크립트는 로컬에서 문법만 확인했고 GPU 실행은 서버 첫 실행이 검증이다.
 
