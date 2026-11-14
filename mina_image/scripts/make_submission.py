@@ -29,6 +29,7 @@ ap.add_argument("--tau", type=float, default=0.7)
 ap.add_argument("--name", required=True)
 ap.add_argument("--compare", type=Path, default=None)
 ap.add_argument("--seed", type=int, default=0)
+ap.add_argument("--train_only", action="store_true", help="Train 만으로 학습(= 팀 val0.9195 모델과 같은 구성, 제출 파일 재현 확인용)")
 a = ap.parse_args()
 sys.path.insert(0, str(a.ts_dir))
 import features as F  # 시계열 팀 코드
@@ -45,7 +46,7 @@ def read(split):
     return d
 
 
-lab = pd.concat([read("train"), read("validation")], ignore_index=True)
+lab = pd.concat([read("train")] + ([] if a.train_only else [read("validation")]), ignore_index=True)
 tst = read("test")
 use_img = bool(a.models)
 if use_img:
