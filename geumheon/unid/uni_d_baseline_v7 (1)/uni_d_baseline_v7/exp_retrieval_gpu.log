@@ -1,0 +1,9 @@
+name, memory.total [MiB]
+NVIDIA RTX 6000 Ada Generation, 49140 MiB
+
+[prior 품질] 2단계 지속시간 예측 MAE(초)
+  Train LOO        전체중앙값 254 | cfg 119 | knn1 109 | knn3 117 | knn5 161 | knn10 153
+  Val (참조=Train)   전체중앙값 175 | cfg 160 | knn1 209 | knn3 199 | knn5 238 | knn10 191
+  상관(spearman) dur2 vs 디스크립터: {'log_t45': 0.63, 'pre_rate60': -0.72, 'pre_rate120': -0.72, 't1_start': 0.11, 'v0': -0.16, 'log_cc': 0.43}
+피처 준비 2s, base 735개
+slurmstepd: error: *** JOB 48852 ON ada01 CANCELLED AT 2026-11-14T22:44:36 ***

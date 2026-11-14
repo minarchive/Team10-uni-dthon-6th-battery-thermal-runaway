@@ -1,0 +1,6 @@
+long exps (>500 rows): train 19 / val 6
+{"features": "sensor4", "n_feat": 140, "class_weight": "none", "aug_cap": false, "cv": 0.9014, "cv_std": 0.0229, "cv_mono": 0.899, "val": 0.896, "val_mono": 0.9071, "val_nocap": 0.8833, "val_mono_per_class": [1.0, 0.86, 0.95, 0.915, 0.895, 0.822], "sec": 24}
+{"features": "all", "n_feat": 705, "class_weight": "none", "aug_cap": false, "cv": 0.898, "cv_std": 0.0225, "cv_mono": 0.892, "val": 0.8935, "val_mono": 0.9191, "val_nocap": 0.858, "val_mono_per_class": [1.0, 0.836, 0.94, 0.912, 0.926, 0.901], "sec": 47}
+{"features": "all", "n_feat": 705, "class_weight": "balanced", "aug_cap": false, "cv": 0.9017, "cv_std": 0.0205, "cv_mono": 0.8965, "val": 0.887, "val_mono": 0.9232, "val_nocap": 0.8542, "val_mono_per_class": [1.0, 0.845, 0.943, 0.916, 0.929, 0.906], "sec": 49}
+{"features": "all-time-meta", "n_feat": 700, "class_weight": "balanced", "aug_cap": false, "cv": 0.8999, "cv_std": 0.0216, "cv_mono": 0.8967, "val": 0.8783, "val_mono": 0.9189, "val_nocap": 0.8297, "val_mono_per_class": [1.0, 0.83, 0.937, 0.91, 0.927, 0.908], "sec": 48}
+{"features": "all", "n_feat": 705, "class_weight": "balanced", "aug_cap": true, "cv": 0.9019, "cv_std": 0.0221, "cv_mono": 0.8972, "val": 0.884, "val_mono": 0.9161, "val_nocap": 0.857, "val_mono_per_class": [0.999, 0.841, 0.943, 0.915, 0.919, 0.88], "sec": 61}
