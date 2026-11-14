@@ -1,0 +1,54 @@
+train rows 33522 experiments 78 | val rows 10200 experiments 19
+{'encoder': 'B0_size', 'layer': '-', 'val_f1': 0.27696220867471844, 'cv_f1': nan, 'adj_acc': 0.7340196078431372, 'per_class_f1': '[0.642, 0.175, 0.241, 0.411, 0.192, 0.0]'}
+{'encoder': 'B0c_cond', 'layer': '-', 'val_f1': 0.31341614607523144, 'cv_f1': nan, 'adj_acc': 0.7130392156862745, 'per_class_f1': '[0.753, 0.194, 0.168, 0.411, 0.268, 0.086]'}
+{'encoder': 'dino_r50', 'layer': 's4_gap', 'val_f1': 0.72, 'cv_f1': 0.7495, 'wd': 0.0001, 'adj_acc': 0.9311, 'train_minus_val': 0.2531, 'per_class_f1': '[0.977, 0.704, 0.807, 0.672, 0.477, 0.681]'}
+{'encoder': 'mae_b', 'layer': 'b08_mean', 'val_f1': 0.6556, 'cv_f1': 0.7378, 'wd': 0.0001, 'adj_acc': 0.9139, 'train_minus_val': 0.27, 'per_class_f1': '[0.972, 0.538, 0.748, 0.598, 0.432, 0.646]'}
+{'encoder': 'dino_r50', 'layer': 's3_gap', 'val_f1': 0.6764, 'cv_f1': 0.7378, 'wd': 0.1, 'adj_acc': 0.9333, 'train_minus_val': 0.2559, 'per_class_f1': '[0.976, 0.547, 0.709, 0.66, 0.441, 0.726]'}
+{'encoder': 'mae_b', 'layer': 'b11_mean', 'val_f1': 0.661, 'cv_f1': 0.7368, 'wd': 0.1, 'adj_acc': 0.9225, 'train_minus_val': 0.2691, 'per_class_f1': '[0.972, 0.589, 0.76, 0.523, 0.41, 0.713]'}
+{'encoder': 'dinov2_b', 'layer': 'b05_mean', 'val_f1': 0.6579, 'cv_f1': 0.7351, 'wd': 0.0001, 'adj_acc': 0.9256, 'train_minus_val': 0.2749, 'per_class_f1': '[0.966, 0.484, 0.69, 0.659, 0.408, 0.74]'}
+{'encoder': 'resnet50', 'layer': 's3_gap', 'val_f1': 0.6392, 'cv_f1': 0.7329, 'wd': 0.1, 'adj_acc': 0.9365, 'train_minus_val': 0.2945, 'per_class_f1': '[0.964, 0.544, 0.66, 0.531, 0.465, 0.672]'}
+{'encoder': 'siglip_b', 'layer': 'b05_mean', 'val_f1': 0.6707, 'cv_f1': 0.732, 'wd': 0.1, 'adj_acc': 0.9311, 'train_minus_val': 0.244, 'per_class_f1': '[0.973, 0.536, 0.676, 0.649, 0.443, 0.746]'}
+{'encoder': 'mae_b', 'layer': 'b07_mean', 'val_f1': 0.6439, 'cv_f1': 0.7311, 'wd': 0.1, 'adj_acc': 0.9137, 'train_minus_val': 0.2783, 'per_class_f1': '[0.974, 0.543, 0.754, 0.558, 0.414, 0.621]'}
+{'encoder': 'dinov2_s_distort', 'layer': 'b09_cls', 'val_f1': 0.6756, 'cv_f1': 0.7305, 'wd': 0.0001, 'adj_acc': 0.9248, 'train_minus_val': 0.2172, 'per_class_f1': '[0.966, 0.55, 0.728, 0.66, 0.437, 0.713]'}
+{'encoder': 'siglip_b', 'layer': 'b06_mean', 'val_f1': 0.688, 'cv_f1': 0.7305, 'wd': 0.1, 'adj_acc': 0.9255, 'train_minus_val': 0.1748, 'per_class_f1': '[0.963, 0.627, 0.743, 0.586, 0.419, 0.791]'}
+{'encoder': 'dino_r50', 'layer': 's2_gap', 'val_f1': 0.6538, 'cv_f1': 0.7302, 'wd': 0.1, 'adj_acc': 0.9284, 'train_minus_val': 0.2381, 'per_class_f1': '[0.964, 0.506, 0.711, 0.676, 0.417, 0.65]'}
+{'encoder': 'dinov2_b', 'layer': 'b08_mean', 'val_f1': 0.6325, 'cv_f1': 0.7291, 'wd': 0.1, 'adj_acc': 0.9258, 'train_minus_val': 0.2836, 'per_class_f1': '[0.966, 0.55, 0.731, 0.587, 0.371, 0.589]'}
+{'encoder': 'dinov2_s', 'layer': 'b06_mean', 'val_f1': 0.6381, 'cv_f1': 0.7285, 'wd': 0.1, 'adj_acc': 0.9354, 'train_minus_val': 0.2275, 'per_class_f1': '[0.965, 0.491, 0.676, 0.531, 0.443, 0.723]'}
+{'encoder': 'siglip_b', 'layer': 'b04_mean', 'val_f1': 0.6803, 'cv_f1': 0.7271, 'wd': 0.0001, 'adj_acc': 0.9324, 'train_minus_val': 0.2523, 'per_class_f1': '[0.978, 0.564, 0.745, 0.671, 0.434, 0.69]'}
+{'encoder': 'dinov2_b', 'layer': 'b06_mean', 'val_f1': 0.6572, 'cv_f1': 0.727, 'wd': 0.1, 'adj_acc': 0.9284, 'train_minus_val': 0.2499, 'per_class_f1': '[0.973, 0.482, 0.662, 0.604, 0.441, 0.782]'}
+{'encoder': 'dinov2_s_distort', 'layer': 'b06_mean', 'val_f1': 0.6692, 'cv_f1': 0.7254, 'wd': 0.0001, 'adj_acc': 0.9328, 'train_minus_val': 0.2284, 'per_class_f1': '[0.973, 0.539, 0.672, 0.646, 0.485, 0.7]'}
+{'encoder': 'dinov2_s_distort', 'layer': 'b11_mean', 'val_f1': 0.6666, 'cv_f1': 0.7233, 'wd': 0.1, 'adj_acc': 0.9212, 'train_minus_val': 0.2179, 'per_class_f1': '[0.96, 0.606, 0.785, 0.643, 0.405, 0.602]'}
+{'encoder': 'convnext_s', 'layer': 's3_gap', 'val_f1': 0.6552, 'cv_f1': 0.7217, 'wd': 0.01, 'adj_acc': 0.9236, 'train_minus_val': 0.251, 'per_class_f1': '[0.968, 0.588, 0.709, 0.643, 0.464, 0.559]'}
+{'encoder': 'resnet50', 'layer': 's2_gap', 'val_f1': 0.6537, 'cv_f1': 0.7217, 'wd': 0.0001, 'adj_acc': 0.9178, 'train_minus_val': 0.2475, 'per_class_f1': '[0.975, 0.612, 0.748, 0.64, 0.418, 0.529]'}
+{'encoder': 'dinov2_s', 'layer': 'b08_mean', 'val_f1': 0.6816, 'cv_f1': 0.7213, 'wd': 0.01, 'adj_acc': 0.9219, 'train_minus_val': 0.217, 'per_class_f1': '[0.955, 0.591, 0.748, 0.637, 0.468, 0.69]'}
+{'encoder': 'dinov2_s', 'layer': 'b05_mean', 'val_f1': 0.6374, 'cv_f1': 0.7205, 'wd': 0.01, 'adj_acc': 0.9195, 'train_minus_val': 0.2321, 'per_class_f1': '[0.961, 0.503, 0.648, 0.577, 0.45, 0.686]'}
+{'encoder': 'resnet50', 'layer': 's3_max', 'val_f1': 0.6348, 'cv_f1': 0.7136, 'wd': 0.01, 'adj_acc': 0.9238, 'train_minus_val': 0.3019, 'per_class_f1': '[0.959, 0.55, 0.686, 0.567, 0.43, 0.617]'}
+{'encoder': 'convnext_s', 'layer': 's4_gap', 'val_f1': 0.6094, 'cv_f1': 0.6888, 'wd': 0.01, 'adj_acc': 0.9255, 'train_minus_val': 0.244, 'per_class_f1': '[0.956, 0.494, 0.638, 0.532, 0.394, 0.643]'}
+{'encoder': 'convnext_s', 'layer': 's2_gap', 'val_f1': 0.5891, 'cv_f1': 0.6868, 'wd': 0.0001, 'adj_acc': 0.9349, 'train_minus_val': 0.2505, 'per_class_f1': '[0.962, 0.457, 0.663, 0.467, 0.431, 0.555]'}
+         encoder    layer  val_f1  cv_f1  adj_acc
+         B0_size        -   0.277    NaN    0.734
+        B0c_cond        -   0.313    NaN    0.713
+        dino_r50   s4_gap   0.720  0.750    0.931
+           mae_b b08_mean   0.656  0.738    0.914
+        dino_r50   s3_gap   0.676  0.738    0.933
+           mae_b b11_mean   0.661  0.737    0.922
+        dinov2_b b05_mean   0.658  0.735    0.926
+        resnet50   s3_gap   0.639  0.733    0.936
+        siglip_b b05_mean   0.671  0.732    0.931
+           mae_b b07_mean   0.644  0.731    0.914
+dinov2_s_distort  b09_cls   0.676  0.730    0.925
+        siglip_b b06_mean   0.688  0.730    0.925
+        dino_r50   s2_gap   0.654  0.730    0.928
+        dinov2_b b08_mean   0.632  0.729    0.926
+        dinov2_s b06_mean   0.638  0.728    0.935
+        siglip_b b04_mean   0.680  0.727    0.932
+        dinov2_b b06_mean   0.657  0.727    0.928
+dinov2_s_distort b06_mean   0.669  0.725    0.933
+dinov2_s_distort b11_mean   0.667  0.723    0.921
+      convnext_s   s3_gap   0.655  0.722    0.924
+        resnet50   s2_gap   0.654  0.722    0.918
+        dinov2_s b08_mean   0.682  0.721    0.922
+        dinov2_s b05_mean   0.637  0.720    0.920
+        resnet50   s3_max   0.635  0.714    0.924
+      convnext_s   s4_gap   0.609  0.689    0.925
+      convnext_s   s2_gap   0.589  0.687    0.935
