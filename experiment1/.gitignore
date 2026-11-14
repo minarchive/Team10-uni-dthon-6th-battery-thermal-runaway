@@ -1,0 +1,8 @@
+# 대회 규정: 데이터/데이터 파생물은 GitHub 반출 금지 -> 캐시·산출물·로그·실행된 노트북은 커밋하지 않음
+cache/
+outputs/
+logs/*.log
+logs/latest*
+*_executed.ipynb
+__pycache__/
+.ipynb_checkpoints/
