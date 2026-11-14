@@ -24,7 +24,8 @@ for name, cols in sets.items():
         fs.append(f1_score(y[va], oof[va], average="macro", labels=list(range(6)), zero_division=0))
     r = dict(encoder=name, layer="-", dim=len(cols), f1_mean=np.mean(fs), f1_std=np.std(fs),
              oof_f1=f1_score(y, oof, average="macro", labels=list(range(6)), zero_division=0),
-             adj_acc=float((np.abs(oof - y) <= 1).mean()), stage_mae=float(np.abs(oof - y).mean()))
+             adj_acc=float((np.abs(oof - y) <= 1).mean()), stage_mae=float(np.abs(oof - y).mean()),
+             gap_train_minus_val=np.nan, wds="", per_class_f1="")
     print({k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()})
     rows.append(r)
 out = ROOT / "outputs" / "logs" / "probe_results.csv"
