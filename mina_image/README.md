@@ -2,6 +2,59 @@
 
 Uni-DTHON 배터리 열폭주 6단계 분류(Macro F1)에서 **열화상 이미지만으로** 어디까지 가능한지 보고, 여러 vision encoder와 그 중간 레이어를 체계적으로 비교하는 작업 공간. 최종 목표는 시계열 센서 + 이미지 융합이다.
 
+## 현재 계획 (2026-11-14 기준, 이 절이 최신 결정)
+
+### 이미지 EDA로 확인된 사실 (학습 300장 표본 + 라벨별 60장 시각 확인, 전체 스캔은 `scripts/` 에서 재실행)
+- 컬러바·눈금·텍스트·회색/검정/흰 테두리 없음 → **crop 불필요**.
+- RGB 의사색, 이미지당 고유색 17~256개(중앙 약 210) → 256색 이하 팔레트, 컬러맵 역변환(픽셀→상대온도 인덱스) 가능성 높음.
+- 색 순서: 자홍(저온) → 파랑 → 청록 → 초록 → 노랑 → 빨강 → 흰색(고온). 5~6단계는 빨강·흰색 영역과 셀 격자 윤곽이 커짐. 1단계 일부는 센서 노이즈.
+- 크기 36~336(W) × 76~308(H). bat_class와 연동(class1 약 57×87, class2 약 321~327×255~308, class3 151×151 또는 336×297) → **크기가 지름길**. 라벨별 평균 크기도 다름(1단계 293×257 → 6단계 124×137).
+
+### 전처리 정책 (인코더 투입 전)
+1. crop 없음, 원본 전체 사용.
+2. 긴 변 224로 맞추는 종횡비 유지 리사이즈(bicubic) + 정사각 패딩(데이터 테두리 최빈색). reflect 패딩 금지.
+3. 정규화는 각 모델 공식 mean/std만. 실험별 z-score·실험 내 최대/최소 정규화 금지(미래 정보 규칙).
+4. 증강 기본 없음. hue/밝기 변환 금지. 파인튜닝에서만 소폭 crop/translate.
+5. W,H 메타는 인코더 입력에서 제외, B0 하한선 전용.
+6. 팔레트 LUT로 온도 인덱스 1채널을 만들어(원해상도 변환 후 리사이즈, 프레임 단독) 3채널 복제 입력도 캐시.
+7. ablation: 패딩 vs 왜곡 리사이즈, 입력 112/224/336 (인코더 1~2개만).
+
+### 1차 인코더 패널 (RTX 5080 16GB, frozen 추출 + 레이어 스윕)
+| 순위 | 인코더 | 근거 |
+| --- | --- | --- |
+| 1 | DINOv2 ViT-S/14, ViT-B/14 | frozen feature·밀집 표현 최강 |
+| 2 | ConvNeXt-S (IN-22k→1k) | 현대 CNN, stage 중간층 풀링 |
+| 3 | ResNet50 | 기준 모델 |
+| 4 | DINO ResNet50 (ViT-S/16은 제외) | 자기지도 CNN 비교 |
+| 5 | SigLIP 또는 OpenCLIP ViT-B/16 | 언어정렬, 중간층 유리 가설 |
+| 6 | MAE ViT-B/16 | 저·중간층 색·질감 보존 |
+
+2차: ViT-B/16 augreg, EfficientNet-B3, Swin-T, DINOv2-L, 무작위 초기화. 열화상 특화 가중치는 가용성 조사 후(1차 제외).
+
+### 다음 실행 순서
+1) 서버 `git pull` + CUDA 12.8+ PyTorch 환경 → 2) `data/folds.parquet` → 3) B0·B1 → 4) 팔레트 LUT·B2 → 5) DINOv2-S·ResNet50로 파이프라인 검증 후 나머지 → 6) 레이어 히트맵 → 상위 3~4개 파인튜닝.
+설계 문서(Claude Docs): https://claude.ai/artifact/DzTecpPUpLfy5m3LpujzPA
+
+### 라벨(단계)별 이미지 분석 (`data_label_split/level_1..6/`, `outputs/figures/collage_level_*.png`, 표본 기준)
+- Train+Val 라벨 프레임 수: L1 18,560 · L2 6,110 · L3 12,535 · L4 2,203 · L5 3,059 · L6 1,255. 라벨은 97개 실험 전부에서 단조 비감소.
+- 단계 시작 시각 중앙값(초): L2 335 · L3 540 · L4 985 · L5 1,145 · L6 1,390, 실험 간 편차 큼(L6 시작 445~7,610초) → 시간만으로 단계 추정 불가.
+- 단계 지속 프레임(평균): L1 191 · L2 63 · L3 129 · L4 23 · L5 34 · L6 13 → 후반 단계는 짧아 실험당 샘플이 적음.
+- **라벨×bat_class 쏠림**: class2는 L1에 11,330프레임(61%)이고 L4~L6에는 459프레임뿐. L1은 class2, L4~L6은 class1·3 위주 → 이미지 크기만으로 단계를 어느 정도 맞힐 수 있는 지름길(B0 필수).
+- L1: 전체가 자홍/보라, 셀 격자가 희미(class1은 센서 노이즈). L2: 중앙부 청록~초록 시작, 일부 셀·단자가 따뜻. L3: 셀 격자 전체가 초록~노랑, 중앙이 주황. L4: 빨강·흰색 코어 등장, 일부 프레임은 흰색 포화. L5: 흰색 포화 영역이 넓고 셀 경계가 번짐. L6: L5와 비슷하나 셀이 깨진 듯 뜯긴 질감·주변 확산이 더 거칠고, 일부는 확대된 프레임.
+- 구분이 어려운 쌍: L4↔L5, L5↔L6(둘 다 빨강/흰색 고온), L1↔L2(저온 단계).
+- 같은 단계 안에서도 배터리 형태·카메라 거리·확대·팔레트 포화 정도가 달라 실험 간 변동이 단계 간 변동만큼 큼.
+
+### 과적합 대책 (모든 실험 공통)
+- 분할은 항상 실험 단위(`folds.parquet`), fit이 필요한 모든 것(표준화·wd·early stopping epoch)은 train fold 안쪽 실험 단위 inner split에서만 선택.
+- 결과표에 `gap_train_minus_val`(inner train F1 − fold val F1)을 항상 기록, 큰 레이어/인코더는 정규화 강화.
+- 프레임이 강하게 상관(같은 실험 5초 간격)이라 프레임 수가 아닌 실험 97개가 실질 표본 크기. 고차원 레이어일수록 wd 격자를 넓게.
+- 지름길 점검: B0(크기)·B0c(조건) 점수를 기준선으로 두고, 인코더가 이를 못 넘으면 지름길만 학습한 것으로 판단. 크기 정책(pad↔distort) ablation으로 확인.
+- 파인튜닝 단계: 낮은 lr, layer-wise lr decay, 소폭 crop/translate, label smoothing, 3시드.
+- (나중에 검토) 파인튜닝용 헤드에 LeakyReLU + Dropout 사용 여부 — frozen probe 단계 결과를 본 뒤 결정.
+
+## 실행(서버, `mina_image/` 에서)
+`scripts/make_folds.py` → `scripts/baseline_b0.py` → `scripts/extract_features.py --encoder <이름>` → `scripts/probe_cv.py --encoder <이름>` → `scripts/summarize.py`. 라벨별 폴더 복사는 `scripts/split_by_label.py`, 콜라주·통계는 `scripts/eda_label_collage.py`. 인코더 이름: dinov2_s, dinov2_b, convnext_s, resnet50, siglip_b, mae_b, dino_r50. 스크립트는 로컬에서 문법만 확인했고 GPU 실행은 서버 첫 실행이 검증이다.
+
 ## 디렉터리
 ```
 mina_image/
