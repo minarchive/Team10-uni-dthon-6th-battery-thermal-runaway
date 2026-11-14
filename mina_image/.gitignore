@@ -3,3 +3,12 @@ data_label_split/collage_cache/
 features/
 data/*.npy
 ckpt/
+data_label_split/
+outputs/figures/collage_*.png
+outputs/figures/overview_*.png
+outputs/figures/image_stats.parquet
+outputs/figures/eda_sensor_image.log
+outputs/figures/stage_timing.csv
+outputs/figures/stats_by_level*.csv
+outputs/preds/
+outputs/submissions/

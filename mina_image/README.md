@@ -35,7 +35,7 @@ Uni-DTHON 배터리 열폭주 6단계 분류(Macro F1)에서 **열화상 이미�
 1) 서버 `git pull` + CUDA 12.8+ PyTorch 환경 → 2) `data/folds.parquet` → 3) B0·B1 → 4) 팔레트 LUT·B2 → 5) DINOv2-S·ResNet50로 파이프라인 검증 후 나머지 → 6) 레이어 히트맵 → 상위 3~4개 파인튜닝.
 설계 문서(Claude Docs): https://claude.ai/artifact/DzTecpPUpLfy5m3LpujzPA
 
-### 라벨(단계)별 이미지 분석 (`data_label_split/level_1..6/`, `outputs/figures/collage_level_*.png`, 표본 기준)
+### 라벨(단계)별 이미지 분석 (표본 기준. 라벨별 폴더·콜라주 이미지는 대회 규정상 데이터 반출 금지라 레포에 포함하지 않음, `scripts/split_by_label.py`·`eda_label_collage.py` 로 서버에서 재생성)
 - Train+Val 라벨 프레임 수: L1 18,560 · L2 6,110 · L3 12,535 · L4 2,203 · L5 3,059 · L6 1,255. 라벨은 97개 실험 전부에서 단조 비감소.
 - 단계 시작 시각 중앙값(초): L2 335 · L3 540 · L4 985 · L5 1,145 · L6 1,390, 실험 간 편차 큼(L6 시작 445~7,610초) → 시간만으로 단계 추정 불가.
 - 단계 지속 프레임(평균): L1 191 · L2 63 · L3 129 · L4 23 · L5 34 · L6 13 → 후반 단계는 짧아 실험당 샘플이 적음.
@@ -61,7 +61,7 @@ Uni-DTHON 배터리 열폭주 6단계 분류(Macro F1)에서 **열화상 이미�
 2. frozen 최고 레이어의 test 예측 저장(센서 모델 전달용)
 3. 파인튜닝 패널: dino_r50 / mae_b / dinov2_b / resnet50 (동일 5-fold, 동일 하이퍼)
 4. dino_r50 ablation(한 번에 하나): 순서형 soft label, 균형 샘플링, 증강, MLP 헤드(LeakyReLU+Dropout), cut3, lr, epoch
-5. `image_probs.parquet`(sample_id별 OOF/test 확률), 앙상블·오류 겹침 분석(`ensemble_oof.py`), 요약
+5. `image_probs.parquet`(sample_id별 OOF/test 확률, 서버 로컬 산출물이며 레포에는 포함하지 않음), 앙상블·오류 겹침 분석(`ensemble_oof.py`), 요약
 **센서 모델과 결합 시 주의**: 이미지 OOF 확률은 `data/folds.parquet` 분할 기준이라, 센서 모델도 같은 fold 를 써야 누수가 없다. test 확률은 5개 fold 모델의 평균.
 **보류**: LoRA(ViT 한정, 용량이 병목이 아닐 가능성), 추가 인코더 탐색, 열화상 특화 가중치 조사.
 
