@@ -4,5 +4,10 @@
     7
   ],
   "alpha_trm1": 0.06,
-  "alpha_trm2": 0.06
+  "alpha_trm2": 0.06,
+  "ens_weights": [
+    0.25,
+    0.25,
+    0.5
+  ]
 }

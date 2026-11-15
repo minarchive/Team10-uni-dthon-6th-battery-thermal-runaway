@@ -1,6 +1,6 @@
 """추론: python test.py --input <test.csv> --image_root <이미지 폴더> --output <submission.csv>
 입력 CSV에 있는 행만 사용한다. 피처·이미지 입력은 같은 실험의 현재·과거 행으로만 계산하므로, 입력 일부만 넣어도 각 행의 예측은 같다.
-최종 구조: P_시계열 = (LightGBM + ExtraTrees(leaf 20) + ExtraTrees(leaf 40)) / 3  (각각 일반 실험용 A, 과충전 실험용 C 분기)
+최종 구조: P_시계열 = 0.25*LightGBM + 0.25*ET(leaf 20) + 0.5*ET(leaf 40)  (config.json 의 ens_weights; 각각 일반 실험용 A, 과충전 실험용 C 분기)
           P = 0.94 * P_시계열 + 0.06 * P_이미지(EfficientNet-B0 시드 2개 평균)  ->  인과적 단조 디코딩(prefix Viterbi)"""
 import argparse, json
 from pathlib import Path
@@ -25,7 +25,8 @@ def main():
     P = L['A'].predict_proba(X[L['cols']])
     if t2.any(): P[t2] = L['C'].predict_proba(X.loc[X.index[t2], L['cols_c']])
     members = [P] + [tree_proba(W, n, X, t2) for n in ('et.joblib', 'et40.joblib') if (W / n).exists()]
-    P = np.mean(members, 0)                                                         # 멤버 확률 평균 (LightGBM, ET20, ET40 각 1/3)
+    w = np.array(cfg.get('ens_weights', [1 / len(members)] * len(members)), float); w = w / w.sum()   # 멤버 가중 평균 (기본: LightGBM, ET20, ET40 각 1/3)
+    P = sum(wi * m for wi, m in zip(w, members))
     images = load_images(df, a.image_root); f0, p15, p60 = first_index(df), past_index(df, 15), past_index(df, 60); Pv = 0
     for s in cfg['vision_seeds']:
         net = VisionNet(pretrained=False).to(dev); net.load_state_dict(torch.load(W / f'vision_seed{s}.pt', map_location=dev)); net.eval(); out = []

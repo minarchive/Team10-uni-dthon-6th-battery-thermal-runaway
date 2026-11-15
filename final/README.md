@@ -1,6 +1,6 @@
-# final — 최종 제출 모델 (Public 0.9070)
+# final — 최종 제출 모델 (Public 0.9091)
 
-배터리 열폭주 6단계 분류(Macro-F1). 이 폴더는 Public 0.9070을 낸 제출 파일(`v3x_et3.csv`)을 그대로 재현하는 코드·가중치입니다.
+배터리 열폭주 6단계 분류(Macro-F1). 이 폴더는 Public 0.9091을 낸 제출 파일(`v3z_g05.csv`)을 그대로 재현하는 코드·가중치입니다.
 기반은 팀원이 만든 파이프라인(`sota_0.8812/` → `v3_sota_et0.8920/`)이고, 최종본은 여기에 **ExtraTrees 하나를 더(leaf 크기만 다르게) 추가**한 것입니다.
 
 ## 1. 한눈에 보기
@@ -8,7 +8,7 @@
 센서 CSV ─► 시계열 피처 166개 (features.py, mode='rich', 같은 실험의 현재·과거 관측만, 시간 창은 초 단위)
               ├─ 일반 실험 (tr_method 1) ──► 분기 A: 피처 166개
               └─ 과충전 실험 (tr_method 2) ─► 분기 C: 압력 절대값·v_peak_ratio 제외 153개
-                   각 분기를 3개 모델이 예측해 확률을 평균 (각 1/3)
+                   각 분기를 3개 모델이 예측해 확률을 가중 평균 (`weights/config.json`의 `ens_weights` = LightGBM 0.25, ET20 0.25, ET40 0.5)
                      ① LightGBM (600트리, lr 0.03, colsample 0.5, 클래스 가중 없음)
                      ② ExtraTrees (500트리, min_samples_leaf=20, max_features=0.3)
                      ③ ExtraTrees (500트리, min_samples_leaf=40, max_features=0.3)   ← 최종본에서 추가한 것
@@ -51,14 +51,15 @@ python train_et.py --data_dir $DATA --leaf 40 --out weights/et40.joblib
 # 추론 (weights/ 그대로 사용)
 python test.py --input $DATA/test/test.csv --image_root $DATA/test --output submission.csv
 ```
-확인: 위 `test.py`를 다시 돌린 결과가 DAKER에 제출한 `v3x_et3.csv`와 **다른 행 0개**(3,451행 전부 일치)입니다. 로컬 점검은 `python check_local.py --data_dir $DATA` (같은 입력 재실행, 행 순서 섞기, 실험 나눠 넣기, 실험마다 앞 60%만 넣기).
+확인: 위 `test.py`를 다시 돌린 결과가 DAKER에 제출한 `v3z_g05.csv`와 **다른 행 0개**(3,451행 전부 일치)입니다. 로컬 점검은 `python check_local.py --data_dir $DATA` (같은 입력 재실행, 행 순서 섞기, 실험 나눠 넣기, 실험마다 앞 60%만 넣기).
 
 ## 4. 점수 이력 (Public)
 | 제출 | Public |
 |---|---|
 | 팀 v1: LightGBM A/C + 이미지 | 0.8812 |
 | v3: v1 + ExtraTrees(leaf 20) 확률 평균 | 0.89 |
-| **최종: v3 + ExtraTrees(leaf 40) 추가 (이 폴더)** | **0.9070** |
+| v3 + ExtraTrees(leaf 40) 추가, 세 모델 1/3씩 (`v3x_et3`) | 0.9070 |
+| **최종: 같은 세 모델, 가중치 LightGBM 0.25 / ET20 0.25 / ET40 0.5 (이 폴더, `v3z_g05`)** | **0.9091** |
 | (참고) 서버에서 만든 다른 후보들 | 우리 단독 LightGBM 0.868, v3 + 우리 모델 0.3 블렌드 0.8732, 경계별 전문 모델 0.8469 |
 
 ## 5. 왜 ExtraTrees를 하나 더 넣었나 (그리고 아는 것/모르는 것)
