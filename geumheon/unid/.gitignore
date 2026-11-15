@@ -20,3 +20,8 @@ img_exp/logs/
 img_exp/parts/
 __pycache__/
 *.pyc
+*.zip
+# 데이터 유래 산출물 (피처 테이블·Test 분포 비교·새 제출 파일)
+*.pkl
+img_exp/ood_*.csv
+img_exp/final_oc[4-9]*/submission_*.csv

@@ -238,20 +238,30 @@ Val, F1 %
 
 ## 7. GPU와 백본 추천
 
+### 현재 노드
+| 항목 | 사양 |
+|---|---|
+| 드라이버 / CUDA | 580.178 / CUDA 13.0 |
+| PyTorch | 2.11.0+cu128, torchvision 0.26.0 |
+| CPU / RAM | 18코어 / 62GB |
+| 미설치 | `timm` (`pip install timm` 필요) |
+
+현재 GPU 메모리는 소형~중형 백본 학습에 충분합니다. bf16 혼합정밀도(AMP)를 쓰면 Base급까지도 학습할 수 있습니다. 이미지가 약 47,000장이라 224×224로 줄여 uint8로 RAM에 올리면 약 7GB이므로, 전부 메모리에 캐시해 디스크 병목을 없앨 수 있습니다.
+
 ### 등급별 후보 (모두 ImageNet 등 공개 가중치, timm/torchvision으로 받을 수 있음)
 
-| 등급 | 모델 | 파라미터 | 용도 |
-|---|---|---:|---|
-| 가벼움 | ResNet18 / ResNet34 | 11M / 21M | 빠른 실험, 기준선 |
-| 가벼움 | EfficientNet-B0 / B2 | 5M / 9M | 작은 데이터에서 과적합 적음 |
-| 가벼움 | ConvNeXt-Atto/Femto/Pico | 4~9M | 가볍지만 최신 구조 |
-| **주력 추천** | **ConvNeXt-Tiny** | 28M | 성능/속도 균형이 가장 좋음 |
-| **주력 추천** | **EfficientNetV2-S** | 21M | 성능/속도 균형 |
-| 주력 | ResNet50, RegNetY-8GF | 25M / 39M | 안정적인 고전 구조 |
-| 주력 | Swin-T, ViT-S/16, DeiT-S | 22~28M | Transformer 계열 비교용 |
-| 상한 | ConvNeXt-Small / Base | 50M / 89M | 시간 여유 있을 때 |
-| 상한 | ViT-B/16, Swin-B, EfficientNetV2-M | 54~88M | 학습 느림, 과적합 주의 |
-| 특징 추출용 | **DINOv2 ViT-S/14, ViT-B/14** (Apache-2.0) | 22M / 86M | 임베딩만 뽑아 GBM에 넣기 |
+| 등급 | 모델 | 파라미터 | 현재 GPU에서 | 용도 |
+|---|---|---:|---|---|
+| 가벼움 | ResNet18 / ResNet34 | 11M / 21M | 여유 있음, batch 256 이상 | 빠른 실험, 기준선 |
+| 가벼움 | EfficientNet-B0 / B2 | 5M / 9M | 여유 있음 | 작은 데이터에서 과적합 적음 |
+| 가벼움 | ConvNeXt-Atto/Femto/Pico | 4~9M | 여유 있음 | 가볍지만 최신 구조 |
+| **주력 추천** | **ConvNeXt-Tiny** | 28M | batch 64~128 (AMP) | 성능/속도 균형이 가장 좋음 |
+| **주력 추천** | **EfficientNetV2-S** | 21M | batch 64 이상 (AMP) | 성능/속도 균형 |
+| 주력 | ResNet50, RegNetY-8GF | 25M / 39M | batch 64 이상 | 안정적인 고전 구조 |
+| 주력 | Swin-T, ViT-S/16, DeiT-S | 22~28M | batch 64 이상 | Transformer 계열 비교용 |
+| 상한 | ConvNeXt-Small / Base | 50M / 89M | batch 32~64 (AMP 필수) | 시간 여유 있을 때 |
+| 상한 | ViT-B/16, Swin-B, EfficientNetV2-M | 54~88M | batch 32 (AMP 필수) | 학습 느림, 과적합 주의 |
+| 특징 추출용 | **DINOv2 ViT-S/14, ViT-B/14** (Apache-2.0) | 22M / 86M | 고정(frozen) 상태로 추론만 하면 매우 여유 | 임베딩만 뽑아 GBM에 넣기 |
 
 학습 시간은 경험상 추정치이며 실측이 필요합니다. ConvNeXt-Tiny를 224 해상도·AMP로 학습하면 47,000장 기준 epoch당 1~2분 정도로 예상합니다. 따라서 주력급 모델을 여러 번 실험해도 시간 여유가 있습니다.
 
@@ -265,3 +275,4 @@ Val, F1 %
 주의할 점:
 - DINOv2는 ImageNet이 아니라 LVD-142M으로 학습된 모델입니다. 규정에 "ImageNet 등"이라고 되어 있어 허용될 가능성이 높지만, 대회 당일 운영진에게 확인하는 게 안전합니다.
 - 사용한 모델은 모두 README에 **모델명 / 출처(timm 이름 또는 HF repo) / 버전 / 라이선스**를 적어야 합니다.
+- 실제 대회에서는 "Uni-D가 제공한 GPU 서버만 사용"이므로, 당일 서버 사양을 보고 이 표를 다시 조정해야 합니다.

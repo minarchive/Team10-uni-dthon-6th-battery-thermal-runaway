@@ -7,6 +7,8 @@
 
 | 항목 | 내용 |
 |---|---|
+| 학습 서버 | SLURM 클러스터. smi.sh와 같은 방식으로 제출 |
+| 대회 서버 | 여기서 고른 모델은 **대회 서버에서 batch 64 AMP로 돌아가는 크기**(≤ 30M 파라미터)로 제한 |
 | Python | `/home/nxcolelxu/unid/venv` (python3 -m venv, torch cu124, lightgbm, scikit-learn, transformers, timm) |
 | 데이터 | `/home/nxcolelxu/unid/data/battery_data_light` (setup.sh의 DATA_URL을 gdown으로 받음) |
 | 사전학습 가중치 | HF `facebook/dinov2-small`, `facebook/dinov2-base` (Apache-2.0), timm `convnext_tiny`, `efficientnet_b0` (ImageNet). 캐시 `hf_cache/` |
@@ -108,7 +110,7 @@ squeue -u $USER; tail -f logs/*.out
 
 1. 방식 A 후보(`v3+cos`, `v3+img_k32`, `v3+img_k64` × DINOv2-S/B)와 방식 B 후보(`v3+cnn`, `v3+cnn+img_k32`, 백본 평균) 중 **CV post F1 1위**를 고른다. 차이가 시드 표준편차(~0.002) 안이면 더 단순한 쪽(피처 적고 백본 작은 쪽).
 2. 방식 B는 2차 누수로 CV가 낙관적일 수 있다. 방식 B가 CV 1위여도 **Val이 방식 A 1위보다 낮으면 방식 A**를 택한다.
-3. 대회 서버(16GB)에서 재현 가능해야 하므로 백본은 **DINOv2-S 또는 ConvNeXt-T 이하**. DINOv2-B가 더 좋아도 차이가 작으면 S.
+3. 대회 서버에서 재현 가능해야 하므로 백본은 **DINOv2-S 또는 ConvNeXt-T 이하**. DINOv2-B가 더 좋아도 차이가 작으면 S.
 4. 어느 설정도 v3를 못 넘으면: 이미지 피처 수를 최소(코사인 거리 9개)로 줄여 손해를 가장 적게 하는 설정을 제출한다.
 5. 채택되면 README에 모델명 / 출처 / 버전 / 라이선스 기재, `val0.9195`와 같은 구조의 패키지(`features.py`·`predict.py`)로 정리.
 

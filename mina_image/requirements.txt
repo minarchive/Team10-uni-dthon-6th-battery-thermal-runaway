@@ -1,4 +1,4 @@
-# torch는 별도 설치(RTX 5080 sm_120 -> CUDA 12.8+ 빌드):
+# torch는 별도 설치(CUDA 12.8+ 빌드):
 #   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 timm>=1.0
 scikit-learn>=1.3
