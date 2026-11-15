@@ -1,0 +1,85 @@
+{
+ "decoder": "viterbi",
+ "rules": [
+  "t1 cummax < 45C -> stage 1",
+  "t1 cummax >= 45C -> not stage 1",
+  "t1 cummax < 50C -> stage <= 2"
+ ],
+ "weights": {
+  "tr_method_1": {
+   "xgb_v3A": 0.25,
+   "et": 0.25,
+   "xgb_J12wide": 0.125,
+   "cnx": 0.125,
+   "lgb": 0.125,
+   "xgb_J6wide": 0.125
+  },
+  "tr_method_2": {
+   "xgb_J12wide": 0.3333333333333333,
+   "dino_s12": 0.16666666666666666,
+   "et": 0.3333333333333333,
+   "cnx": 0.16666666666666666
+  }
+ },
+ "selector": "greedy",
+ "picked": {
+  "tr_method_1": "greedy",
+  "tr_method_2": "greedy"
+ },
+ "components": {
+  "cnx": [
+   "cnx/seed_0.pt",
+   "cnx/seed_1.pt",
+   "cnx/seed_2.pt"
+  ],
+  "dino_s12": [
+   "dino_s12/fold_0.pt",
+   "dino_s12/fold_1.pt",
+   "dino_s12/fold_2.pt",
+   "dino_s12/fold_3.pt",
+   "dino_s12/fold_4.pt"
+  ],
+  "et": [
+   "et_final_trval.joblib"
+  ],
+  "lgb": [
+   "lgb_final_trval.joblib"
+  ],
+  "xgb_J12wide": [
+   "xgb_J12wide/final_seed0.joblib",
+   "xgb_J12wide/final_seed1.joblib",
+   "xgb_J12wide/final_seed2.joblib",
+   "xgb_J12wide/final_seed3.joblib",
+   "xgb_J12wide/final_seed4.joblib"
+  ],
+  "xgb_J6wide": [
+   "xgb_J6wide/final_seed0.joblib",
+   "xgb_J6wide/final_seed1.joblib",
+   "xgb_J6wide/final_seed2.joblib",
+   "xgb_J6wide/final_seed3.joblib",
+   "xgb_J6wide/final_seed4.joblib"
+  ],
+  "xgb_v3A": [
+   "xgb_v3A/meta.joblib",
+   "xgb_v3A/xgb_seed0.joblib",
+   "xgb_v3A/xgb_seed1.joblib",
+   "xgb_v3A/xgb_seed2.joblib",
+   "xgb_v3A/xgb_seed3.joblib",
+   "xgb_v3A/xgb_seed4.joblib"
+  ]
+ },
+ "test_agreement": {
+  "SOTA_ET 0.8920": {
+   "diff": 87,
+   "f1": 0.9633708207508181
+  },
+  "SOTA 0.8812": {
+   "diff": 102,
+   "f1": 0.9572863438771341
+  },
+  "oc4 R_J6wide": {
+   "diff": 43,
+   "f1": 0.9775496799677713
+  }
+ }
+}
