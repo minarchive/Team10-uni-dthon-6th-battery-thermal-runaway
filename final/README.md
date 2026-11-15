@@ -1,6 +1,6 @@
-# final — 최종 제출 모델 (Public 0.9070, `submission.csv` = `v3x_et3.csv`)
+# final — 최종 제출 모델 (Public 0.9070)
 
-배터리 열폭주 6단계 분류(Macro-F1). 이 폴더는 Public 0.9070을 낸 제출 파일과, 그 파일을 그대로 재현하는 코드·가중치입니다.
+배터리 열폭주 6단계 분류(Macro-F1). 이 폴더는 Public 0.9070을 낸 제출 파일(`v3x_et3.csv`)을 그대로 재현하는 코드·가중치입니다.
 기반은 팀원이 만든 파이프라인(`sota_0.8812/` → `v3_sota_et0.8920/`)이고, 최종본은 여기에 **ExtraTrees 하나를 더(leaf 크기만 다르게) 추가**한 것입니다.
 
 ## 1. 한눈에 보기
@@ -31,6 +31,13 @@
 
 학습 데이터는 Train(78) + Validation(19) 전체 실험입니다. 모든 입력은 같은 실험의 현재·과거 관측만 씁니다(외부 데이터 없음, 이미지 백본의 ImageNet 사전학습 가중치만 사용).
 
+## 환경 / 학습·검증 구성 / 사전학습 모델
+- **환경**: Ubuntu 22.04, Python 3.10.12, GPU NVIDIA RTX 5080(이미지 추론은 CPU로도 가능), `requirements.txt` 참고(torch는 버전 미지정).
+- **학습 구성**: Train(78개 실험) + Validation(19개 실험) 전체로 최종 학습. 클래스 가중치 없음, 시드 42 고정.
+- **검증 구성**: 실험 단위 5-fold(같은 실험의 프레임이 학습·검증에 섞이지 않음)의 OOF, 제공 Validation, 그리고 Test 입력과 가까운 학습 실험 30개로 한 '닮은 실험' 평가. 자세한 수치는 5절.
+- **시계열 피처**: 센서(T1, T2, thermal, 전압, 압력, 보조 센서) 시차 차이·창 평균·표준편차·최대·최소·기울기·누적 극값·임계(45/50/60℃ 등, 전압 하락) 도달 후 경과시간 등 166개. 전부 같은 실험의 현재·과거 행으로만 계산하고 창은 `relative_time_s`(초) 기준.
+- **사전학습 모델**: 이미지 모델 EfficientNet-B0의 ImageNet 사전학습 가중치(torchvision `IMAGENET1K_V1`)만 사용했고 학습 때 미세조정했습니다. 외부 데이터와 다른 사전학습 모델은 쓰지 않았습니다.
+
 ## 3. 재현
 ```bash
 pip install -r requirements.txt
@@ -44,7 +51,7 @@ python train_et.py --data_dir $DATA --leaf 40 --out weights/et40.joblib
 # 추론 (weights/ 그대로 사용)
 python test.py --input $DATA/test/test.csv --image_root $DATA/test --output submission.csv
 ```
-확인: 위 `test.py`를 다시 돌린 결과가 제출한 `submission.csv`와 **다른 행 0개**(3,451행 전부 일치)입니다.
+확인: 위 `test.py`를 다시 돌린 결과가 DAKER에 제출한 `v3x_et3.csv`와 **다른 행 0개**(3,451행 전부 일치)입니다. 로컬 점검은 `python check_local.py --data_dir $DATA` (같은 입력 재실행, 행 순서 섞기, 실험 나눠 넣기, 실험마다 앞 60%만 넣기).
 
 ## 4. 점수 이력 (Public)
 | 제출 | Public |
@@ -65,4 +72,4 @@ python test.py --input $DATA/test/test.csv --image_root $DATA/test --output subm
 ## 6. 팀원에게
 - 이 폴더만으로 재현됩니다. 팀원 코드(`features.py`, `model.py`, `train.py`)는 수정하지 않았고, `train_et.py`에 `--leaf/--out` 옵션을, `test.py`에 ET 두 개를 읽어 평균하는 부분을 추가했습니다.
 - 추가 실험을 하신다면 한 번에 하나만, v3 대비 바뀌는 Test 행 수를 먼저 확인하고 올리는 것을 권합니다.
-- 가중치(`weights/`)와 `submission.csv`는 요청에 따라 함께 올렸습니다. 대회 데이터 반출 규정에 해당하는지는 팀에서 확인해 주세요.
+- 학습된 가중치는 `weights/`에 있습니다(파일당 21MB 이하, 합계 약 87MB). 대회 데이터와 제출 CSV는 레포에 올리지 않았습니다.
