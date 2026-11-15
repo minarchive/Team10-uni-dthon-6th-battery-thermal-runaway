@@ -26,5 +26,6 @@ tail -f logs/latest.log                    # 실시간 로그 (logs/<단계>_<�
 | `run_evidence.sh` | 스케일링·이미지 가공 방식의 직접 측정 |
 | `run_events.sh`, `src/events.py`, `src/rules.py` | 사건·규칙 피처(인과성 검사 포함) |
 | `run_team.sh`, `src/team_pipeline.py`, `src/team_suite.py` | `mina_image/scripts/final_lgb.py` 로컬 재현(0.9147 / 0.9184 일치) + XGBoost·ExtraTrees·배깅·앙상블·증강 스위트 |
+| `run_team.sh team_physics`, `src/team_physics.py` | 리뷰 논문 기반 물리 피처(Arrhenius ln(dT/dt) vs 1/T, 히터 대비 자체 발열) 시험. 인과성 검사 포함, B0 대비 실험 단위 CI. 결과: 채택 근거 없음 |
 
 주의: 각형·과충전 Test 실험 2개의 시작 압력이 학습 최대의 3~7배다(학습 실험 7개뿐). CV 점수는 이 분포 이동을 보지 못하므로 CV 만으로 채택하지 말 것.
