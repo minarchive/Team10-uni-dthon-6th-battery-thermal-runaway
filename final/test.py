@@ -1,6 +1,6 @@
 """추론: python test.py --input <test.csv> --image_root <이미지 폴더> --output <submission.csv>
 입력 CSV에 있는 행만 사용한다. 피처·이미지 입력은 같은 실험의 현재·과거 행으로만 계산하므로, 입력 일부만 넣어도 각 행의 예측은 같다.
-최종 구조: P_시계열 = 0.2083*LightGBM + 0.2083*ET(leaf 20) + 0.5833*ET(leaf 40)  (config.json 의 ens_weights; 각각 일반 실험용 A, 과충전 실험용 C 분기)
+최종 구조: P_시계열 = 0.1667*LightGBM + 0.1667*ET(leaf 20) + 0.6667*ET(leaf 40)  (config.json 의 ens_weights; 각각 일반 실험용 A, 과충전 실험용 C 분기)
           P = 0.94 * P_시계열 + 0.06 * P_이미지(EfficientNet-B0 시드 2개 평균)  ->  인과적 단조 디코딩(prefix Viterbi)"""
 import argparse, json
 from pathlib import Path
